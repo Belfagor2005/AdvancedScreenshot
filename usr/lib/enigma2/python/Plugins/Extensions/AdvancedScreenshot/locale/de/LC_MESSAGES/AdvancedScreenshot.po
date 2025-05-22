@@ -1,0 +1,207 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-20 18:18+0200\n"
+"PO-Revision-Date: 2025-05-20 18:18+0200\n"
+"Last-Translator: smokey\n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-SearchPath-0: plugin.py\n"
+
+#: plugin.py:104
+msgid "Grab Binary"
+msgstr ""
+
+#: plugin.py:105
+msgid "Web Interface"
+msgstr ""
+
+#: plugin.py:111
+msgid "Default Resolution"
+msgstr ""
+
+#: plugin.py:128
+msgid "Hard Disk"
+msgstr ""
+
+#: plugin.py:129
+msgid "USB Drive"
+msgstr ""
+
+#: plugin.py:130
+msgid "Temporary"
+msgstr ""
+
+#: plugin.py:136
+msgid "OSD Only"
+msgstr ""
+
+#: plugin.py:137
+msgid "Video Only"
+msgstr ""
+
+#: plugin.py:138
+msgid "OSD + Video"
+msgstr ""
+
+#: plugin.py:148
+msgid "no message"
+msgstr "keine Nachricht"
+
+#: plugin.py:149
+msgid "no timeout"
+msgstr "kein Timeout"
+
+#: plugin.py:460
+msgid "Screenshot saved successfully!"
+msgstr ""
+
+#: plugin.py:464
+msgid "Error during capture:\n"
+msgstr ""
+
+#: plugin.py:552
+msgid "Press OK to save - EXIT to cancel"
+msgstr ""
+
+#: plugin.py:590
+msgid "Delete"
+msgstr ""
+
+#: plugin.py:591
+msgid "Preview"
+msgstr ""
+
+#: plugin.py:614
+msgid "Error loading gallery: "
+msgstr ""
+
+#: plugin.py:627
+msgid "Delete failed: "
+msgstr ""
+
+#: plugin.py:668
+msgid "Settings"
+msgstr ""
+
+#: plugin.py:693
+msgid "Enable plugin"
+msgstr ""
+
+#: plugin.py:695
+msgid "Capture Method"
+msgstr ""
+
+#: plugin.py:696
+msgid "Freeze frame preview"
+msgstr ""
+
+#: plugin.py:700
+msgid "Always save screenshots"
+msgstr ""
+
+#: plugin.py:703
+msgid "Save path"
+msgstr ""
+
+#: plugin.py:704
+msgid "Resolution"
+msgstr ""
+
+#: plugin.py:705
+msgid "Image format"
+msgstr ""
+
+#: plugin.py:708
+msgid "JPEG quality"
+msgstr ""
+
+#: plugin.py:711
+msgid "Capture mode"
+msgstr ""
+
+#: plugin.py:712
+msgid "Hotkey button"
+msgstr ""
+
+#: plugin.py:715
+msgid "Capture Delay"
+msgstr ""
+
+#: plugin.py:730 plugin.py:822
+msgid "Unknown"
+msgstr ""
+
+#: plugin.py:735
+msgid "Button press type warning"
+msgstr ""
+
+#: plugin.py:737
+msgid "Long press required for {}"
+msgstr ""
+
+#: plugin.py:743
+msgid "Press type (short press action for {} button)"
+msgstr ""
+
+#: plugin.py:749
+msgid "Message timeout"
+msgstr ""
+
+#: plugin.py:852
+msgid "Advanced Screenshot"
+msgstr ""
+
+#: plugin.py:853
+msgid "Professional screenshot tool"
+msgstr ""
+
+#: plugin.py:859
+msgid "Advanced Screenshot Gallery"
+msgstr ""
+
+#: plugin.py:860
+msgid "View captured screenshots"
+msgstr ""
+
+#~ msgid "Mute"
+#~ msgstr "Stumm"
+
+#~ msgid "Help"
+#~ msgstr "Help"
+
+#~ msgid "Timer"
+#~ msgstr "Timer"
+
+#~ msgid "EPG"
+#~ msgstr "EPG"
+
+#~ msgid "TV"
+#~ msgstr "TV"
+
+#~ msgid "Radio"
+#~ msgstr "Radio"
+
+#~ msgid "Text"
+#~ msgstr "Text"
+
+#~ msgid "Audio"
+#~ msgstr "Audio"
+
+#~ msgid "Red"
+#~ msgstr "Rot"
+
+#~ msgid "Green"
+#~ msgstr "Grün"
+
+#~ msgid "Yellow"
+#~ msgstr "Gelb"
+
+#~ msgid "Blue"
+#~ msgstr "Blau"
