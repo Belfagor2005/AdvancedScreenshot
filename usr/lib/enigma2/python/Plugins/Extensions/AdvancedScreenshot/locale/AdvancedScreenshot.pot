@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Advanced Screenshot\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-22 19:01+0200\n"
+"POT-Creation-Date: 2025-05-22 22:01+0200\n"
 "PO-Revision-Date: 2025-05-19 22:13+0200\n"
 "Last-Translator: \n"
 "Language-Team: Persian Professionals <persianpros@yahoo.com>\n"
@@ -144,39 +144,43 @@ msgstr ""
 msgid "Save path (requires restart)"
 msgstr ""
 
-#: plugin.py:859 plugin.py:974
+#: plugin.py:859
+msgid "Select screenshot button"
+msgstr ""
+
+#: plugin.py:864 plugin.py:994
 msgid "Unknown"
 msgstr ""
 
-#: plugin.py:863
+#: plugin.py:868
 msgid "Button behavior warning"
 msgstr ""
 
-#: plugin.py:865
+#: plugin.py:870
 msgid "Long press required for {}"
 msgstr ""
 
-#: plugin.py:869
+#: plugin.py:874
 msgid "Press type for {}"
 msgstr ""
 
-#: plugin.py:875
+#: plugin.py:895
 msgid "Message timeout (seconds)"
 msgstr ""
 
-#: plugin.py:1004
+#: plugin.py:1024
 msgid "Advanced Screenshot"
 msgstr ""
 
-#: plugin.py:1005
+#: plugin.py:1025
 msgid "Professional screenshot tool"
 msgstr ""
 
-#: plugin.py:1011
+#: plugin.py:1031
 msgid "Advanced Screenshot Gallery"
 msgstr ""
 
-#: plugin.py:1012
+#: plugin.py:1032
 msgid "View captured screenshots"
 msgstr ""
 

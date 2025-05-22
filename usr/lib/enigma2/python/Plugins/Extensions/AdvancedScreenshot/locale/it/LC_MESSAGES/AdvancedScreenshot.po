@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Advanced Screenshot\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-22 19:01+0200\n"
-"PO-Revision-Date: 2025-05-22 19:03+0200\n"
+"POT-Creation-Date: 2025-05-22 22:01+0200\n"
+"PO-Revision-Date: 2025-05-22 22:02+0200\n"
 "Last-Translator: \n"
 "Language-Team: Persian Professionals <persianpros@yahoo.com>\n"
 "Language: it_IT\n"
@@ -145,39 +145,43 @@ msgstr "Salva sempre  Screenshots"
 msgid "Save path (requires restart)"
 msgstr "Salva percorso (richiede il riavvio)"
 
-#: plugin.py:859 plugin.py:974
+#: plugin.py:859
+msgid "Select screenshot button"
+msgstr "Seleziona il pulsante per lo screenshot"
+
+#: plugin.py:864 plugin.py:994
 msgid "Unknown"
 msgstr "Sconosciuto"
 
-#: plugin.py:863
+#: plugin.py:868
 msgid "Button behavior warning"
 msgstr "Avviso sul comportamento del pulsante"
 
-#: plugin.py:865
+#: plugin.py:870
 msgid "Long press required for {}"
 msgstr "È richiesta una pressione prolungata per {}"
 
-#: plugin.py:869
+#: plugin.py:874
 msgid "Press type for {}"
 msgstr "Premere brevemente per {}"
 
-#: plugin.py:875
+#: plugin.py:895
 msgid "Message timeout (seconds)"
 msgstr "Timeout del messaggio (secondi)"
 
-#: plugin.py:1004
+#: plugin.py:1024
 msgid "Advanced Screenshot"
 msgstr "Screenshot avanzato"
 
-#: plugin.py:1005
+#: plugin.py:1025
 msgid "Professional screenshot tool"
 msgstr "Strumento professionale per screenshot"
 
-#: plugin.py:1011
+#: plugin.py:1031
 msgid "Advanced Screenshot Gallery"
 msgstr "Galleria di screenshot avanzata"
 
-#: plugin.py:1012
+#: plugin.py:1032
 msgid "View captured screenshots"
 msgstr "Mostra Screenshots catturato"
 
