@@ -2,6 +2,8 @@
 
 <img src="https://github.com/Belfagor2005/AdvancedScreenshot/blob/main/usr/lib/enigma2/python/Plugins/Extensions/AdvancedScreenshot/plugin.png?raw=true">
 
+<img src="https://github.com/Belfagor2005/AdvancedScreenshot/blob/main/screen/config.png?raw=true">
+
 <img src="https://github.com/Belfagor2005/AdvancedScreenshot/blob/main/screen/galery.png?raw=true">
 
 <img src="https://github.com/Belfagor2005/AdvancedScreenshot/blob/main/screen/list.png?raw=true">
