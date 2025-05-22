@@ -1,15 +1,11 @@
-### 📄 `README.md`
-
-````markdown
 # 📸 Advanced Screenshot Plugin for Enigma2
 
-![Platform](https://img.shields.io/badge/platform-Enigma2-blue.svg)
-![Status](https://img.shields.io/badge/status-Active-brightgreen.svg)
-![Python](https://img.shields.io/badge/python-2.7-yellow.svg)
-![License](https://img.shields.io/github/license/your-name/advanced-screenshot.svg)
-![GUI](https://img.shields.io/badge/interface-GUI%20Based-orange)
+<img src="https://github.com/Belfagor2005/AdvancedScreenshot/blob/main/usr/lib/enigma2/python/Plugins/Extensions/AdvancedScreenshot/plugin.png?raw=true">
 
----
+<img src="https://github.com/Belfagor2005/AdvancedScreenshot/blob/main/screen/galery.png?raw=true">
+
+<img src="https://github.com/Belfagor2005/AdvancedScreenshot/blob/main/screen/list.png?raw=true">
+
 
 ## 🧩 Description
 
@@ -20,22 +16,6 @@
 - View full-screen previews
 - Use slideshow mode for automated image browsing
 - Navigate using remote control shortcuts
-
----
-
-## 🖼️ Screenshots
-
-| Thumbnail Gallery | Fullscreen View |
-|------------------|-----------------|
-| ![Gallery](gallery.png) | ![List](list.png) |
-
-<img src="https://github.com/Belfagor2005/AdvancedScreenshot/blob/main/usr/lib/enigma2/python/Plugins/Extensions/AdvancedScreenshot/plugin.png?raw=true">
-
-<img src="https://github.com/Belfagor2005/AdvancedScreenshot/blob/main/screen/galery.png?raw=true">
-
-<img src="https://github.com/Belfagor2005/AdvancedScreenshot/blob/main/screen/list.png?raw=true">
-
----
 
 ## ⚙️ Features
 
