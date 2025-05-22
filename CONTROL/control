@@ -1,0 +1,11 @@
+Package: enigma2-plugin-extensions-advancedscreenshot
+Version: 1.0
+Description: Advanced Screenshot plugin for Enigma2 by Lululla.  
+ A tool to capture screenshots from the Enigma2 GUI.
+Section: base
+Priority: optional
+Maintainer: Lululla <ekekaz@gmail.com>
+License: Proprietary
+Architecture: all
+OE: enigma2
+Source: enigma2-plugin-extensions-advancedscreenshot
