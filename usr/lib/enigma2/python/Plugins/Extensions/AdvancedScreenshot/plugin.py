@@ -46,7 +46,7 @@ from Components.ActionMap import ActionMap
 from Components.ConfigList import ConfigList, ConfigListScreen
 from Components.config import (
 	ConfigEnableDisable, ConfigInteger, ConfigSelection, ConfigSubsection,
-	ConfigYesNo, config, getConfigListEntry
+	ConfigYesNo, config, getConfigListEntry, ConfigNothing, NoSave
 )
 from Components.Label import Label
 from Components.Harddisk import harddiskmanager
@@ -65,6 +65,7 @@ from .MyConsole import MyConsole
 # Constants
 SIZE_W = getDesktop(0).size().width()
 SIZE_H = getDesktop(0).size().height()
+currversion = '1.1'
 
 
 def getScale():
@@ -600,7 +601,6 @@ class ScreenshotGallery(Screen):
 		self.screenshots = []
 		self['list'] = MenuList(self.screenshots)
 		self['preview'] = Pixmap()
-
 		base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
 		self.full_path = f"{base_path}/screenshots"
 		path = self.full_path
@@ -775,10 +775,10 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
 		Screen.__init__(self, session)
 		self.setup_title = _("Settings")
 		self.list = []
-		self.onChangedEntry = []
+		self._onConfigEntryChanged = []
 		self["config"] = ConfigList(self.list)
 		self._create_config()
-		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.onChangedEntry)
+		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self._onConfigEntryChanged)
 		self["actions"] = ActionMap(
 			["SetupActions", "ColorActions", "VirtualKeyboardActions"],
 			{
@@ -801,7 +801,7 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
 
 		# Basic configuration
 		section = '--------------------------------------( Advanced Screenshot Setup )--------------------------------------'
-		self.list.append(getConfigListEntry(_(section)))
+		self.list.append((_(section), NoSave(ConfigNothing())))
 		self.list.append(getConfigListEntry(_("Enable plugin"), config.plugins.AdvancedScreenshot.enabled))
 
 		if config.plugins.AdvancedScreenshot.enabled.value:
@@ -884,14 +884,15 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
 		self["config"].list = self.list
 		self["config"].l.setList(self.list)
 
-	def onChangedEntry(self, configElement=None):
+	def _onConfigEntryChanged(self, configElement=None):
 		for x in self.onChangedEntry:
 			x()
 		self._create_config()
 
 	def save(self):
 		for x in self["config"].list:
-			x[1].save()
+			if isinstance(x, tuple) and len(x) > 1 and hasattr(x[1], "save"):
+				x[1].save()
 		self.close(True)
 
 	def cancel(self):
@@ -928,7 +929,10 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
 		pass
 
 	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
+		current = self["config"].getCurrent()
+		if current and hasattr(current[1], "getText"):
+			return str(current[1].getText())
+		return str(current[1])  # fallback
 
 	def createSummary(self):
 		from Screens.Setup import SetupSummary
@@ -1007,7 +1011,7 @@ def Plugins(**kwargs):
 		),
 		PluginDescriptor(
 			name=_("Advanced Screenshot"),
-			description=_("Professional screenshot tool"),
+			description=_("Professional screenshot tool") + ' ' + currversion,
 			where=PluginDescriptor.WHERE_PLUGINMENU,
 			icon="plugin.png",
 			fnc=setup
