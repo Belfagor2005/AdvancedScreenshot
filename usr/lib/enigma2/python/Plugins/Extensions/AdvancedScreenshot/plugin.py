@@ -65,7 +65,7 @@ from .MyConsole import MyConsole
 # Constants
 SIZE_W = getDesktop(0).size().width()
 SIZE_H = getDesktop(0).size().height()
-currversion = '1.1'
+currversion = '1.2'
 
 
 def getScale():
