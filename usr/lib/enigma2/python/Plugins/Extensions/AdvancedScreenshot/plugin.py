@@ -241,6 +241,9 @@ def cleanup_tmp_files(tmp_folder="/tmp", max_age_seconds=3600):
 def checkfolder(folder):
 	if exists(folder):
 		return True
+	else:
+		makedirs(folder, exist_ok=True)
+		return True
 	return False
 
 
@@ -606,7 +609,8 @@ class ScreenshotGallery(Screen):
 		path = self.full_path
 		if not path.endswith("/"):
 			self.full_path += "/"
-
+		if checkfolder(self.full_path):
+			print('folder exist')
 		self.Scale = getScale()
 		self.picload = ePicLoad()
 		try:
@@ -645,24 +649,25 @@ class ScreenshotGallery(Screen):
 		fname = self['list'].getCurrent()
 		self.filename = self.full_path + str(fname)
 		print('filename ok=', self.filename)
-		if self.filename is not None:
-			print(f"[ScreenshotGallery] ShowPicture: {str(self.filename)}")
-			scalex = self.Scale[0] if isinstance(self.Scale[0], (int, float)) else 1
-			scaley = self.Scale[1] if isinstance(self.Scale[1], (int, float)) else 1
-			self.picload.setPara([
-				self["preview"].instance.size().width(),
-				self["preview"].instance.size().height(),
-				scalex,
-				scaley,
-				0,
-				1,
-				"#ff000000"
-			])
-
-			if self.picload.startDecode(self.filename):
-				self.picload = ePicLoad()
-				self.picload.PictureData.get().append(self.DecodePicture)
+		if not hasattr(self, "filename") or not self.filename:
 			return
+		print(f"[ScreenshotGallery] ShowPicture: {str(self.filename)}")
+		scalex = self.Scale[0] if isinstance(self.Scale[0], (int, float)) else 1
+		scaley = self.Scale[1] if isinstance(self.Scale[1], (int, float)) else 1
+		self.picload.setPara([
+			self["preview"].instance.size().width(),
+			self["preview"].instance.size().height(),
+			scalex,
+			scaley,
+			0,
+			1,
+			"#ff000000"
+		])
+
+		if self.picload.startDecode(self.filename):
+			self.picload = ePicLoad()
+			self.picload.PictureData.get().append(self.DecodePicture)
+		return
 
 	def DecodePicture(self, PicInfo=""):
 		if len(self.screenshots) > 0:
@@ -865,13 +870,13 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
 
 			if current_value in ("398", "399", "400"):
 				self.list.append(getConfigListEntry(
-					_("Button behavior warning"),
-					config.plugins.AdvancedScreenshot.dummy,
-					_("Long press required for {}").format(button_name)
+					_("Long press required for") + button_name + _(" long ' can be used."),
+					config.plugins.shootyourscreen.dummy
 				))
+				config.plugins.shootyourscreen.switchhelp.setValue(0)
 			else:
 				self.list.append(getConfigListEntry(
-					_("Press type for {}").format(button_name),
+					_("Press type for ") + button_name + _(" ' button instead of ' ") + button_name + _(" long:"),
 					config.plugins.AdvancedScreenshot.switchhelp
 				))
 
@@ -890,6 +895,10 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
 		self._create_config()
 
 	def save(self):
+		base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
+		full_path = f"{base_path}/screenshots/"
+		if checkfolder(full_path):
+			print(f"{full_path}")
 		for x in self["config"].list:
 			if isinstance(x, tuple) and len(x) > 1 and hasattr(x[1], "save"):
 				x[1].save()

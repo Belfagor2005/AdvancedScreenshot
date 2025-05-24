@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Advanced Screenshot\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-22 22:01+0200\n"
-"PO-Revision-Date: 2025-05-22 22:02+0200\n"
+"POT-Creation-Date: 2025-05-24 13:13+0200\n"
+"PO-Revision-Date: 2025-05-24 13:14+0200\n"
 "Last-Translator: \n"
 "Language-Team: Persian Professionals <persianpros@yahoo.com>\n"
 "Language: it_IT\n"
@@ -15,175 +15,186 @@ msgstr ""
 "X-Generator: Poedit 3.6\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:125
+#: plugin.py:126
 msgid "Hard Disk"
 msgstr ""
 
-#: plugin.py:126
+#: plugin.py:127
 msgid "USB Drive"
 msgstr ""
 
-#: plugin.py:136
+#: plugin.py:137
 msgid "Network mount"
 msgstr ""
 
-#: plugin.py:138
+#: plugin.py:139
 msgid "Temporary"
 msgstr "Temporanea"
 
-#: plugin.py:159
+#: plugin.py:160
 msgid "Default Resolution"
 msgstr "Risoluzione predefinita"
 
-#: plugin.py:167
+#: plugin.py:168
 msgid "JPEG 100%"
 msgstr ""
 
-#: plugin.py:168
+#: plugin.py:169
 msgid "JPEG 90%"
 msgstr ""
 
-#: plugin.py:169
+#: plugin.py:170
 msgid "JPEG 80%"
 msgstr ""
 
-#: plugin.py:170
+#: plugin.py:171
 msgid "JPEG 60%"
 msgstr ""
 
-#: plugin.py:171
+#: plugin.py:172
 msgid "PNG"
 msgstr ""
 
-#: plugin.py:172
+#: plugin.py:173
 msgid "BMP"
 msgstr ""
 
-#: plugin.py:189
+#: plugin.py:190
 msgid "OSD Only"
 msgstr "Solo OSD"
 
-#: plugin.py:190
+#: plugin.py:191
 msgid "Video Only"
 msgstr "Solo Video"
 
-#: plugin.py:191
+#: plugin.py:192
 msgid "OSD + Video"
 msgstr "OSD + Video"
 
-#: plugin.py:203
+#: plugin.py:204
 msgid "no message"
 msgstr "nessun messaggio"
 
-#: plugin.py:204
+#: plugin.py:205
 msgid "no timeout"
 msgstr "nessun timeout"
 
-#: plugin.py:461
+#: plugin.py:465
 msgid "Error during capture:\n"
 msgstr ""
 "Errore durante la cattura:\n"
 " \n"
 
-#: plugin.py:488 plugin.py:492
+#: plugin.py:492 plugin.py:496
 msgid "Screenshot saved successfully!"
 msgstr "Screenshot salvato con successo!"
 
-#: plugin.py:530
+#: plugin.py:534
 msgid "Press OK to save - EXIT to cancel"
 msgstr "Premere OK per salvare - ESCI per annullare"
 
-#: plugin.py:642
+#: plugin.py:646
 msgid "Error loading gallery: "
 msgstr "Errore durante il caricamento della galleria: "
 
-#: plugin.py:720
+#: plugin.py:725
 msgid "Are you sure you want to delete this screenshot?"
 msgstr "Vuoi davvero eliminare questo screenshot?"
 
-#: plugin.py:729
+#: plugin.py:734
 msgid "Delete failed: "
 msgstr "Eliminazione non riuscita: "
 
-#: plugin.py:776
+#: plugin.py:781
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: plugin.py:805
+#: plugin.py:810
 msgid "Enable plugin"
 msgstr "Abilita plugin"
 
-#: plugin.py:811
+#: plugin.py:816
 msgid "Image format"
 msgstr "Formato Immagine"
 
-#: plugin.py:817
+#: plugin.py:822
 msgid "Resolution"
 msgstr "Risoluzione"
 
-#: plugin.py:823
+#: plugin.py:828
 msgid "Fix aspect ratio (adds -n to force no stretching)"
 msgstr "Correggi le proporzioni (aggiungi -n per forzare nessun allungamento)"
 
-#: plugin.py:829
+#: plugin.py:834
 msgid "Always output 4:3 image (adds letterbox if source is 16:9)"
 msgstr "Emetti sempre un'immagine 4:3 (aggiunge il letterbox se la sorgente è 16:9)"
 
-#: plugin.py:835
+#: plugin.py:840
 msgid "Use bicubic resize (slower, but smoother image)"
 msgstr "Utilizza il ridimensionamento bicubico (immagine più lenta, ma più fluida)"
 
-#: plugin.py:841
+#: plugin.py:846
 msgid "Freeze frame preview"
 msgstr "Anteprima del fermo immagine"
 
-#: plugin.py:847
+#: plugin.py:852
 msgid "Always save screenshots"
 msgstr "Salva sempre  Screenshots"
 
-#: plugin.py:853
+#: plugin.py:858
 msgid "Save path (requires restart)"
 msgstr "Salva percorso (richiede il riavvio)"
 
-#: plugin.py:859
+#: plugin.py:864
 msgid "Select screenshot button"
 msgstr "Seleziona il pulsante per lo screenshot"
 
-#: plugin.py:864 plugin.py:994
+#: plugin.py:869 plugin.py:992
 msgid "Unknown"
 msgstr "Sconosciuto"
 
-#: plugin.py:868
-msgid "Button behavior warning"
-msgstr "Avviso sul comportamento del pulsante"
+#: plugin.py:873
+msgid "Long press required for"
+msgstr "È richiesta una pressione prolungata per"
 
-#: plugin.py:870
-msgid "Long press required for {}"
-msgstr "È richiesta una pressione prolungata per {}"
+#: plugin.py:873
+msgid " long ' can be used."
+msgstr ""
 
-#: plugin.py:874
-msgid "Press type for {}"
-msgstr "Premere brevemente per {}"
+#: plugin.py:879
+msgid "Press type for "
+msgstr "Premere il tipo di tasto per "
 
-#: plugin.py:895
+#: plugin.py:879
+msgid " ' button instead of ' "
+msgstr ""
+
+#: plugin.py:879
+msgid " long:"
+msgstr ""
+
+#: plugin.py:885
 msgid "Message timeout (seconds)"
 msgstr "Timeout del messaggio (secondi)"
 
-#: plugin.py:1024
+#: plugin.py:1022
 msgid "Advanced Screenshot"
 msgstr "Screenshot avanzato"
 
-#: plugin.py:1025
+#: plugin.py:1023
 msgid "Professional screenshot tool"
 msgstr "Strumento professionale per screenshot"
 
-#: plugin.py:1031
+#: plugin.py:1029
 msgid "Advanced Screenshot Gallery"
 msgstr "Galleria di screenshot avanzata"
 
-#: plugin.py:1032
+#: plugin.py:1030
 msgid "View captured screenshots"
 msgstr "Mostra Screenshots catturato"
+
+#~ msgid "Button behavior warning"
+#~ msgstr "Avviso sul comportamento del pulsante"
 
 #~ msgid "Delete"
 #~ msgstr "Elimina"
