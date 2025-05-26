@@ -1,0 +1,26 @@
+<setupxml>
+	<setup key="AdvancedScreenshotConfig" title="Advanced Screenshot Setup">
+	
+		<item level="0" text="Enable plugin" description="Enable or disable the Advanced Screenshot plugin.">config.plugins.AdvancedScreenshot.enabled</item>
+		<if conditional="config.plugins.AdvancedScreenshot.enabled.value == True">
+			<item level="1" text="Image format" description="Select the image format for screenshots.">config.plugins.AdvancedScreenshot.pictureformat</item>
+			<item level="1" text="Resolution" description="Select the resolution for screenshots.">config.plugins.AdvancedScreenshot.picturesize</item>
+			<item level="1" text="Fix aspect ratio" description="Add -n option to force no stretching.">config.plugins.AdvancedScreenshot.fixed_aspect_ratio</item>
+			<item level="1" text="Always output 4:3 image" description="Add letterbox if source is 16:9.">config.plugins.AdvancedScreenshot.always_43</item>
+			<item level="1" text="Use bicubic resize" description="Slower but smoother image resizing.">config.plugins.AdvancedScreenshot.bi_cubic</item>
+			<item level="1" text="Freeze frame preview" description="Freeze the frame preview when taking screenshot.">config.plugins.AdvancedScreenshot.freezeframe</item>
+			<if conditional="config.plugins.AdvancedScreenshot.freezeframe.value == True">
+				<item level="2" text="Always save screenshots" description="Save screenshots even if frame is frozen.">config.plugins.AdvancedScreenshot.allways_save</item>
+			</if>
+			<item level="1" text="Save path (requires restart)" description="Folder where screenshots are saved.">config.plugins.AdvancedScreenshot.path</item>
+			<item level="1" text="Select screenshot button" description="Choose which button triggers screenshot.">config.plugins.AdvancedScreenshot.buttonchoice</item>
+			<if conditional="config.plugins.AdvancedScreenshot.buttonchoice.value in ['398', '399', '400']">
+				<item level="2" text="Long press required for button" description="Long press must be used for this button.">config.plugins.AdvancedScreenshot.dummy</item>
+			</if>
+			<if conditional="not (config.plugins.AdvancedScreenshot.buttonchoice.value in ['398', '399', '400'])">
+				<item level="2" text="Press type for button" description="Set press type for button instead of long press.">config.plugins.AdvancedScreenshot.switchhelp</item>
+			</if>
+			<item level="1" text="Message timeout (seconds)" description="Time to display messages on screen.">config.plugins.AdvancedScreenshot.timeout</item>
+		</if>
+	</setup>
+</setupxml>
