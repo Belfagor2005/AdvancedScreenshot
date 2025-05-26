@@ -42,7 +42,7 @@ from enigma import eActionMap, ePicLoad, getDesktop
 from twisted.web import resource, server
 
 # Application-specific Imports
-from Components.ActionMap import ActionMap
+from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import (
 	ConfigEnableDisable, ConfigInteger, ConfigSelection, ConfigSubsection,
 	ConfigYesNo, config
@@ -51,6 +51,7 @@ from Components.Label import Label
 from Components.Harddisk import harddiskmanager
 from Components.MenuList import MenuList
 from Components.Pixmap import Pixmap
+from Components.Sources.StaticText import StaticText
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -775,17 +776,16 @@ class AdvancedScreenshotConfig(Setup):
 		Setup.__init__(self, session, setup="AdvancedScreenshotConfig", plugin="Extensions/AdvancedScreenshot")
 		self.parent = parent
 		base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
-		full_path = f"{base_path}/screenshots/"
-		if checkfolder(full_path):
-			print(f"{full_path}")
-		self["actions"] = ActionMap(
-			["SetupActions", "ColorActions", "VirtualKeyboardActions"],
-			{
-				"blue": self.onGallery,
-				"yellow": self.onPicView,
-				"showVirtualKeyboard": self.KeyText,
-			}
-		)
+		self.full_path = f"{base_path}/screenshots/"
+		if checkfolder(self.full_path):
+			print(f"{self.full_path}")
+		self["key_yellow"] = StaticText(_("PicView"))
+		self["key_blue"] = StaticText(_("Galery"))
+		self["actions"] = HelpableActionMap(self, ["ColorActions", "VirtualKeyboardActions"], {
+			"blue": (self.keyBlue, _("Galery")),
+			"yellow": (self.keyYellow, _("PicView")),
+			"showVirtualKeyboard": (self.KeyText, _("VirtualKeyboard"))
+		}, prio=0)
 
 	def keySave(self):
 		Setup.keySave(self)
@@ -818,40 +818,27 @@ class AdvancedScreenshotConfig(Setup):
 				pass
 			# self["config"].invalidate(current)
 
-	# def keySelect(self):
-		# if self.getCurrentItem() in (config.plugins.AdvancedScreenshot.path):
-			# currDir = self.getCurrentItem().value if self.getCurrentItem().value else None
-			# self.session.openWithCallback(boundFunction(self.keySelectCallback, self.getCurrentItem()), LocationBox, text=_("Select default File Commander directory:"), currDir=currDir, minFree=100)
-		# else:
-			# Setup.keySelect(self)
-
-	# def keySelectCallback(self, configItem, path):
-		# if path:
-			# configItem.value = path
-
 	def createSummary(self):
 		from Screens.Setup import SetupSummary
 		return SetupSummary
 
-	def onPicView(self):
+	def keyYellow(self):
 		fullpath = []
-		base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
-		full_path = f"{base_path}/screenshots/"
-		print(f"[AdvancedScreenshotConfig]onPicView full_path: {str(full_path)}")
-		if checkfolder(full_path):
-			for x in listdir(full_path):
-				if isfile(full_path + x):
+		print(f"[AdvancedScreenshotConfig]onPicView full_path: {str(self.full_path)}")
+		if checkfolder(self.full_path):
+			for x in listdir(self.full_path):
+				if isfile(self.full_path + x):
 					print(f"[AdvancedScreenshotConfig]onPicView file x: {str(x)}")
 					if x.endswith('.jpg') or x.endswith('.png') or x.endswith('.bmp') or x.endswith('.gif'):
 						fullpath.append(x)
-			self.fullpath = fullpath
+			self.fullpathThumb = fullpath
 			try:
 				from .picplayer import Galery_Thumb
-				self.session.open(Galery_Thumb, self.fullpath, 0, full_path)
+				self.session.open(Galery_Thumb, self.fullpathThumb, 0, self.full_path)
 			except TypeError as e:
 				print(f"[AdvancedScreenshotConfig]onPicView error: {str(e)}")
 
-	def onGallery(self):
+	def keyBlue(self):
 		try:
 			self.session.open(ScreenshotGallery)
 		except TypeError as e:
