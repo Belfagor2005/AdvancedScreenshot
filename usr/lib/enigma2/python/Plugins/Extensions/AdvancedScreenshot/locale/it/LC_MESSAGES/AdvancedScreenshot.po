@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Advanced Screenshot\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-24 13:13+0200\n"
-"PO-Revision-Date: 2025-05-24 13:14+0200\n"
+"POT-Creation-Date: 2025-05-24 14:01+0200\n"
+"PO-Revision-Date: 2025-05-24 14:02+0200\n"
 "Last-Translator: \n"
 "Language-Team: Persian Professionals <persianpros@yahoo.com>\n"
 "Language: it_IT\n"
@@ -159,7 +159,7 @@ msgstr "È richiesta una pressione prolungata per"
 
 #: plugin.py:873
 msgid " long ' can be used."
-msgstr ""
+msgstr " lungo può essere usato."
 
 #: plugin.py:879
 msgid "Press type for "
@@ -167,11 +167,11 @@ msgstr "Premere il tipo di tasto per "
 
 #: plugin.py:879
 msgid " ' button instead of ' "
-msgstr ""
+msgstr " ' pulsante ' invece di ' "
 
 #: plugin.py:879
 msgid " long:"
-msgstr ""
+msgstr " lungo:"
 
 #: plugin.py:885
 msgid "Message timeout (seconds)"

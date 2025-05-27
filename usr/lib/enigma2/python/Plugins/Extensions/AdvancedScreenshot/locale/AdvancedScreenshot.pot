@@ -1,11 +1,9 @@
-
-#, fuzzy
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Advanced Screenshot\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-24 13:13+0200\n"
+"POT-Creation-Date: 2025-05-24 14:01+0200\n"
 "PO-Revision-Date: 2025-05-19 22:13+0200\n"
 "Last-Translator: \n"
 "Language-Team: Persian Professionals <persianpros@yahoo.com>\n"
@@ -193,69 +191,3 @@ msgstr ""
 #: plugin.py:1030
 msgid "View captured screenshots"
 msgstr ""
-
-#~ msgid "Grabbing Screenshot failed !!!"
-#~ msgstr "Screenshot fallito !!!"
-
-#~ msgid ""
-#~ "Sorry, your device for screenshots is not writeable.\n"
-#~ "\n"
-#~ "Please choose another one."
-#~ msgstr ""
-#~ "Spiacenti, il tuo dispositivo per gli screenshot non è scrivibile.\n"
-#~ "\n"
-#~ "Si prega di sceglierne un altro."
-
-#~ msgid "Save with RECORD-Button"
-#~ msgstr "Salva con tasto RECORD"
-
-#~ msgid "Exit"
-#~ msgstr "Esci"
-
-#~ msgid "Enable ShootYourScreen :"
-#~ msgstr "Abilita ShootYourScreen :"
-
-#~ msgid "Show on screen :"
-#~ msgstr "Mostra su Screen:"
-
-#~ msgid "Screenshot of :"
-#~ msgstr "Screenshot di:"
-
-#~ msgid "Format for screenshots :"
-#~ msgstr "Formato Screenshot:"
-
-#~ msgid "Quality of jpg picture :"
-#~ msgstr "Qualità immagine jpg:"
-
-#~ msgid "Select a button to take a screenshot :"
-#~ msgstr "Assegna bottone a screenshot:"
-
-#~ msgid "Only button ' "
-#~ msgstr "Solo tasto  ' "
-
-#~ msgid " long ' can be used."
-#~ msgstr " lungo ' può essere usato."
-
-#~ msgid "Use the ' "
-#~ msgstr "Usa il ' "
-
-#~ msgid " ' button instead of ' "
-#~ msgstr " ' tasto invece di ' "
-
-#~ msgid " long ' :"
-#~ msgstr " lungo ':"
-
-#~ msgid "Timeout for info message :"
-#~ msgstr "Timeout per il messaggio informativo :"
-
-#~ msgid "Really close without saving settings?"
-#~ msgstr "Davvero vicino senza salvare le impostazioni?"
-
-#~ msgid "Reset ShootYourScreen settings to defaults?"
-#~ msgstr "Ripristinare le impostazioni predefinite di ShootYourScreen?"
-
-#~ msgid "make Screenshots with your Enigma2 STB"
-#~ msgstr "fai screenshot con il tuo STB Enigma2"
-
-#~ msgid "Tv"
-#~ msgstr "Tv"
