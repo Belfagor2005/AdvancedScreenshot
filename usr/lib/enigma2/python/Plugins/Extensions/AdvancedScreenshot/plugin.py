@@ -42,20 +42,19 @@ from enigma import eActionMap, ePicLoad, getDesktop
 from twisted.web import resource, server
 
 # Application-specific Imports
-from Components.ActionMap import ActionMap, HelpableActionMap
+from Components.ActionMap import ActionMap
+from Components.ConfigList import ConfigList, ConfigListScreen
 from Components.config import (
 	ConfigEnableDisable, ConfigInteger, ConfigSelection, ConfigSubsection,
-	ConfigYesNo, config
+	ConfigYesNo, config, getConfigListEntry, ConfigNothing, NoSave
 )
 from Components.Label import Label
 from Components.Harddisk import harddiskmanager
 from Components.MenuList import MenuList
 from Components.Pixmap import Pixmap
-from Components.Sources.StaticText import StaticText
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-from Screens.Setup import Setup
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import resolveFilename, SCOPE_MEDIA
 
@@ -109,14 +108,6 @@ MODE_MAP = {
 	"video": "-v",
 	"All": ""
 }
-
-
-AdvsInstance = None
-
-
-def FCCChanged():
-	if AdvsInstance:
-		AdvsInstance.ADVSetupChanged()
 
 
 # auto mount device
@@ -771,43 +762,165 @@ class ScreenshotPreview(Screen):
 			self["image"].instance.setPixmap(ptr)
 
 
-class AdvancedScreenshotConfig(Setup):
-	def __init__(self, session, parent=None):
-		Setup.__init__(self, session, setup="AdvancedScreenshotConfig", plugin="Extensions/AdvancedScreenshot")
-		self.parent = parent
-		base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
-		self.full_path = f"{base_path}/screenshots/"
-		if checkfolder(self.full_path):
-			print(f"{self.full_path}")
-		self["key_yellow"] = StaticText(_("PicView"))
-		self["key_blue"] = StaticText(_("Galery"))
-		self["actions"] = HelpableActionMap(self, ["ColorActions", "VirtualKeyboardActions"], {
-			"blue": (self.keyBlue, _("Galery")),
-			"yellow": (self.keyYellow, _("PicView")),
-			"showVirtualKeyboard": (self.KeyText, _("VirtualKeyboard"))
-		}, prio=0)
+class AdvancedScreenshotConfig(ConfigListScreen, Screen):
+	skin = """
+	<screen name="AdvancedScreenshotConfig" position="center,center" size="1280,720" title="Screenshot Settings" flags="wfNoBorder">
+		<widget name="config" position="50,50" size="1180,600" scrollbarMode="showNever" itemHeight="35" font="Regular;32" />
+		<eLabel position="45,670" size="300,40" font="Regular;36" backgroundColor="#b3ffd9" foregroundColor="#000000" borderWidth="1" zPosition="4" borderColor="#0000ff00" text="OK" halign="center" />
+		<eLabel position="345,670" size="300,40" font="Regular;36" backgroundColor="#b3ffd9" foregroundColor="#000000" borderWidth="1" zPosition="4" borderColor="#00ffa000" text="Cancel" halign="center" />
+		<eLabel position="643,670" size="300,40" font="Regular;36" backgroundColor="#00ffa000" foregroundColor="#000000" borderWidth="1" zPosition="4" borderColor="#00ffa000" text="Galery" halign="center" />
+		<eLabel position="944,670" size="300,40" font="Regular;36" backgroundColor="#3e91f6" foregroundColor="#000000" borderWidth="1" zPosition="4" borderColor="#00ffa000" text="List" halign="center" />
+		<eLabel backgroundColor="#00ff0000" position="45,710" size="300,6" zPosition="12" />
+		<eLabel backgroundColor="#0000ff00" position="345,710" size="300,6" zPosition="12" />
+		<eLabel backgroundColor="#00ffff00" position="643,710" size="300,6" zPosition="12" />
+		<eLabel backgroundColor="#000000ff" position="944,710" size="300,6" zPosition="12" />
+	</screen>"""
 
-	def keySave(self):
-		Setup.keySave(self)
+	def __init__(self, session):
+		Screen.__init__(self, session)
+		self.setup_title = _("Settings")
+		self.list = []
+		self._onConfigEntryChanged = []
+		self["config"] = ConfigList(self.list)
+		self._create_config()
+		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self._onConfigEntryChanged)
+		self["actions"] = ActionMap(
+			["SetupActions", "ColorActions", "VirtualKeyboardActions"],
+			{
+				"ok": self.save,
+				"cancel": self.cancel,
+				"blue": self.onGallery,
+				"yellow": self.onPicView,
+				"green": self.save,
+				"red": self.cancel,
+				"showVirtualKeyboard": self.KeyText,
+			}
+		)
+		self.onLayoutFinish.append(self.__layoutFinished)
+
+	def __layoutFinished(self):
+		self.setTitle(self.setup_title)
+
+	def _create_config(self):
+		self.list = []
+
+		# Basic configuration
+		section = '--------------------------------------( Advanced Screenshot Setup )--------------------------------------'
+		self.list.append((_(section), NoSave(ConfigNothing())))
+		self.list.append(getConfigListEntry(_("Enable plugin"), config.plugins.AdvancedScreenshot.enabled))
+
+		if config.plugins.AdvancedScreenshot.enabled.value:
+
+			# 1: Update image format options
+			self.list.append(getConfigListEntry(
+				_("Image format"),
+				config.plugins.AdvancedScreenshot.pictureformat
+			))
+
+			# 2: New logic for resolution
+			self.list.append(getConfigListEntry(
+				_("Resolution"),
+				config.plugins.AdvancedScreenshot.picturesize
+			))
+
+			# 3: Aspect ratio fix
+			self.list.append(getConfigListEntry(
+				_("Fix aspect ratio (adds -n to force no stretching)"),
+				config.plugins.AdvancedScreenshot.fixed_aspect_ratio
+			))
+
+			# 4: Force 4:3 output
+			self.list.append(getConfigListEntry(
+				_("Always output 4:3 image (adds letterbox if source is 16:9)"),
+				config.plugins.AdvancedScreenshot.always_43
+			))
+
+			# 5: Bicubic resize
+			self.list.append(getConfigListEntry(
+				_("Use bicubic resize (slower, but smoother image)"),
+				config.plugins.AdvancedScreenshot.bi_cubic
+			))
+
+			# 6: Freeze frame preview
+			self.list.append(getConfigListEntry(
+				_("Freeze frame preview"),
+				config.plugins.AdvancedScreenshot.freezeframe
+			))
+
+			if config.plugins.AdvancedScreenshot.freezeframe.value:
+				self.list.append(getConfigListEntry(
+					_("Always save screenshots"),
+					config.plugins.AdvancedScreenshot.allways_save
+				))
+
+			# 7: Save path
+			self.list.append(getConfigListEntry(
+				_("Save path (requires restart)"),
+				config.plugins.AdvancedScreenshot.path
+			))
+
+			# 8: Keymapping
+			self.list.append(getConfigListEntry(
+				_("Select screenshot button"),
+				config.plugins.AdvancedScreenshot.buttonchoice
+			))
+
+			current_value = config.plugins.AdvancedScreenshot.buttonchoice.value
+			button_name = BUTTON_MAP.get(current_value, _("Unknown"))
+
+			if current_value in ("398", "399", "400"):
+				self.list.append(getConfigListEntry(
+					_("Long press required for") + button_name + _(" long ' can be used."),
+					config.plugins.AdvancedScreenshot.dummy
+				))
+				config.plugins.AdvancedScreenshot.switchhelp.setValue(0)
+			else:
+				self.list.append(getConfigListEntry(
+					_("Press type for ") + button_name + _(" ' button instead of ' ") + button_name + _(" long:"),
+					config.plugins.AdvancedScreenshot.switchhelp
+				))
+
+			# 9: Timeout
+			self.list.append(getConfigListEntry(
+				_("Message timeout (seconds)"),
+				config.plugins.AdvancedScreenshot.timeout
+			))
+
+		self["config"].list = self.list
+		self["config"].l.setList(self.list)
+
+	def _onConfigEntryChanged(self, configElement=None):
+		for x in self.onChangedEntry:
+			x()
+		self._create_config()
+
+	def save(self):
+		base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
+		full_path = f"{base_path}/screenshots/"
+		if checkfolder(full_path):
+			print(f"{full_path}")
+		for x in self["config"].list:
+			if isinstance(x, tuple) and len(x) > 1 and hasattr(x[1], "save"):
+				x[1].save()
 		self.close(True)
 
-	def keyCancel(self):
+	def cancel(self):
 		self.close(False)
 
 	def KeyText(self):
-		current = self.getCurrentItem()
-		if current and current[1] == config.plugins.AdvancedScreenshot.path:
-			text_value = str(current[1].value)
+		sel = self["config"].getCurrent()
+		if sel:
+			text_value = str(sel[1].value)
 			self.session.openWithCallback(
 				self.VirtualKeyBoardCallback,
 				VirtualKeyBoard,
-				title=current[0],
+				title=sel[0],
 				text=text_value
 			)
 
 	def VirtualKeyBoardCallback(self, callback=None):
 		if callback is not None:
-			current = self.getCurrentItem()
+			current = self["config"].getCurrent()
 			cfg = current[1]
 			try:
 				if hasattr(cfg, "base"):
@@ -816,29 +929,59 @@ class AdvancedScreenshotConfig(Setup):
 					cfg.value = callback
 			except Exception:
 				pass
-			# self["config"].invalidate(current)
+			self["config"].invalidate(current)
+
+	def getCurrentEntry(self):
+		return self["config"].getCurrent()[0]
+
+	def showhide(self):
+		pass
+
+	def getCurrentValue(self):
+		current = self["config"].getCurrent()
+		if current and hasattr(current[1], "getText"):
+			return str(current[1].getText())
+		return str(current[1])  # fallback
 
 	def createSummary(self):
 		from Screens.Setup import SetupSummary
 		return SetupSummary
 
-	def keyYellow(self):
+	def keyLeft(self):
+		ConfigListScreen.keyLeft(self)
+		self._create_config()
+
+	def keyRight(self):
+		ConfigListScreen.keyRight(self)
+		self._create_config()
+
+	def keyDown(self):
+		self['config'].instance.moveSelection(self['config'].instance.moveDown)
+		self._create_config()
+
+	def keyUp(self):
+		self['config'].instance.moveSelection(self['config'].instance.moveUp)
+		self._create_config()
+
+	def onPicView(self):
 		fullpath = []
-		print(f"[AdvancedScreenshotConfig]onPicView full_path: {str(self.full_path)}")
-		if checkfolder(self.full_path):
-			for x in listdir(self.full_path):
-				if isfile(self.full_path + x):
+		base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
+		full_path = f"{base_path}/screenshots/"
+		print(f"[AdvancedScreenshotConfig]onPicView full_path: {str(full_path)}")
+		if checkfolder(full_path):
+			for x in listdir(full_path):
+				if isfile(full_path + x):
 					print(f"[AdvancedScreenshotConfig]onPicView file x: {str(x)}")
 					if x.endswith('.jpg') or x.endswith('.png') or x.endswith('.bmp') or x.endswith('.gif'):
 						fullpath.append(x)
-			self.fullpathThumb = fullpath
+			self.fullpath = fullpath
 			try:
 				from .picplayer import Galery_Thumb
-				self.session.open(Galery_Thumb, self.fullpathThumb, 0, self.full_path)
+				self.session.open(Galery_Thumb, self.fullpath, 0, full_path)
 			except TypeError as e:
 				print(f"[AdvancedScreenshotConfig]onPicView error: {str(e)}")
 
-	def keyBlue(self):
+	def onGallery(self):
 		try:
 			self.session.open(ScreenshotGallery)
 		except TypeError as e:
