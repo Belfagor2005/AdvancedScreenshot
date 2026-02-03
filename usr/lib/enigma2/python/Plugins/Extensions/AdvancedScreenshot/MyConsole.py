@@ -9,10 +9,10 @@ from os import waitpid
 
 class ConsoleItem:
     """Class representing a console command item."""
-    
+
     def __init__(self, containers, cmd, callback, extra_args, binary=False):
         """Initialize console item.
-        
+
         Args:
             containers: Dictionary of active containers
             cmd: Command to execute (string or list)
@@ -27,13 +27,13 @@ class ConsoleItem:
         self.binary = binary
         self.container = eConsoleAppContainer()
         self.appResults = []
-        
+
         # Generate unique name for this command
         if isinstance(cmd, list):
             name = " ".join(cmd)
         else:
             name = cmd
-            
+
         if name in containers:
             name = str(name) + '@' + hex(id(self))
         self.name = name
@@ -48,7 +48,8 @@ class ConsoleItem:
 
         # Log command execution
         if len(cmd) > 1:
-            print("[Console] Processing command " + str(cmd) + " with arguments " + str(cmd[1:]))
+            print("[Console] Processing command " +
+                  str(cmd) + " with arguments " + str(cmd[1:]))
         else:
             print("[Console] Processing command line " + str(cmd))
 
@@ -63,11 +64,16 @@ class ConsoleItem:
             try:
                 waitpid(pid, 0)
             except OSError as err:
-                print("[Console] Error " + str(err.errno) + ": Wait for command on PID " + str(pid) + " to terminate failed! " + str(err.strerror))
+                print("[Console] Error " +
+                      str(err.errno) +
+                      ": Wait for command on PID " +
+                      str(pid) +
+                      " to terminate failed! " +
+                      str(err.strerror))
 
     def dataAvailCB(self, data):
         """Callback for data availability from command output.
-        
+
         Args:
             data: Data received from command
         """
@@ -75,12 +81,12 @@ class ConsoleItem:
 
     def finishedCB(self, retval):
         """Callback for command completion.
-        
+
         Args:
             retval: Return value from command execution
         """
         print("[Console] finishedCB " + str(retval))
-        
+
         # Clean up container
         try:
             del self.containers[self.name]
@@ -107,14 +113,17 @@ class ConsoleItem:
             except Exception as e:
                 print("[Console][Error] Failed to join appResults: " + str(e))
                 return
-                
+
             # Write data to file
             try:
                 with open(self.filenamesaved, "wb") as f:
                     f.write(data)
-                    print("[Console][Debug] Successfully wrote: " + str(self.filenamesaved))
+                    print("[Console][Debug] Successfully wrote: " +
+                          str(self.filenamesaved))
             except Exception as e:
-                print("[Console][Error] Failed to write binary data to file: " + str(e))
+                print(
+                    "[Console][Error] Failed to write binary data to file: " +
+                    str(e))
                 return
 
             # Call user callback with results
@@ -123,14 +132,14 @@ class ConsoleItem:
 
 class MyConsole:
     """Console class for executing commands with callbacks.
-    
+
     Console by default will work with strings on callback.
     If binary data required class should be initialized with Console(binary=True)
     """
-    
+
     def __init__(self, binary=False):
         """Initialize console.
-        
+
         Args:
             binary: Whether to handle binary data (default: False)
         """
@@ -140,24 +149,29 @@ class MyConsole:
 
     def ePopen(self, cmd, callback=None, extra_args=None):
         """Execute a single command.
-        
+
         Args:
             cmd: Command to execute
             callback: Callback function for completion
             extra_args: Extra arguments for callback
-            
+
         Returns:
             ConsoleItem object
         """
         if extra_args is None:
             extra_args = []
-            
+
         print("[Console]command: " + str(cmd))
-        return ConsoleItem(self.appContainers, cmd, callback, extra_args, self.binary)
+        return ConsoleItem(
+            self.appContainers,
+            cmd,
+            callback,
+            extra_args,
+            self.binary)
 
     def eBatch(self, cmds, callback, extra_args=None, debug=False):
         """Execute multiple commands in batch.
-        
+
         Args:
             cmds: List of commands to execute
             callback: Callback function for completion of all commands
@@ -166,24 +180,25 @@ class MyConsole:
         """
         if extra_args is None:
             extra_args = []
-            
+
         self.debug = debug
         cmd = cmds.pop(0)
         self.ePopen(cmd, self.eBatchCB, [cmds, callback, extra_args])
 
     def eBatchCB(self, data, retval, _extra_args):
         """Callback for batch command execution.
-        
+
         Args:
             data: Data from command output
             retval: Return value from command
             _extra_args: Extra arguments containing remaining commands
         """
         (cmds, callback, extra_args) = _extra_args
-        
+
         if self.debug:
-            print("[Console][eBatch] retval=" + str(retval) + ", cmds left=" + str(len(cmds)) + ", data:\n" + str(data))
-            
+            print("[Console][eBatch] retval=" + str(retval) +
+                  ", cmds left=" + str(len(cmds)) + ", data:\n" + str(data))
+
         if len(cmds):
             # Execute next command in batch
             cmd = cmds.pop(0)
@@ -194,7 +209,7 @@ class MyConsole:
 
     def kill(self, name):
         """Kill a specific command by name.
-        
+
         Args:
             name: Name of command to kill
         """
