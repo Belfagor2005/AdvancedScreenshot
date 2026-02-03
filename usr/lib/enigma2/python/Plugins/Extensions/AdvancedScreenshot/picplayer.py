@@ -86,12 +86,23 @@ class Galery_Thumb(Screen):
             thumb_h = self.pic_y - textsize * 2
 
             # Label skin
-            skincontent += ('<widget source="label' + str(x) + '" render="Label" '
-                            'position="' + str(abs_x) + ',' + str(label_pos) + '" '
-                            'size="' + str(self.pic_x) + ',' + str(textsize) + '" '
+            skincontent += ('<widget source="label' +
+                            str(x) +
+                            '" render="Label" '
+                            'position="' +
+                            str(abs_x) +
+                            ',' +
+                            str(label_pos) +
+                            '" '
+                            'size="' +
+                            str(self.pic_x) +
+                            ',' +
+                            str(textsize) +
+                            '" '
                             'halign="center" font="Regular;24" zPosition="2" '
                             'transparent="1" noWrap="1" foregroundColor="' +
-                            self.textcolor + '" />\n')
+                            self.textcolor +
+                            '" />\n')
 
             # Thumbnail skin
             skincontent += (
@@ -102,13 +113,16 @@ class Galery_Thumb(Screen):
             )
 
         # Build complete skin
-        skinthumb = ('<screen name="Galery_Thumb" position="center,center" size="' +
-                     str(size_w) + ',' + str(size_h) + '" flags="wfNoBorder">\n')
+        skinthumb = (
+            '<screen name="Galery_Thumb" position="center,center" size="' +
+            str(size_w) +
+            ',' +
+            str(size_h) +
+            '" flags="wfNoBorder">\n')
         skinthumb += ('<eLabel position="0,0" zPosition="1" size="' +
                       str(size_w) + ',' + str(size_h) + '" backgroundColor="' +
                       self.color + '" halign="center" />\n')
-        skinthumb += ('<widget name="frame" position="35,30" size="' +
-                      str(self.pic_x + 5) + ',' + str(self.pic_y + 10) +
+        skinthumb += ('<widget name="frame" position="35,30" size="' + str(self.pic_x + 5) + ',' + str(self.pic_y + 10) + \
                       '" scale="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/AdvancedScreenshot/images/pic_frame.png" alphatest="on" zPosition="3"/>\n')
         skinthumb += skincontent
         skinthumb += '</screen>\n'
@@ -168,7 +182,7 @@ class Galery_Thumb(Screen):
         if self.picload.PictureData is not None:
             try:
                 self.picload.PictureData.get().append(self.show_pic)
-            except:
+            except BaseException:
                 self.picload.PictureData.connect(self.show_pic)
 
         self.thumb_timer = eTimer()
@@ -263,7 +277,9 @@ class Galery_Thumb(Screen):
 
                 if ptr is None:
                     print("Error: self.PicLoad.getData() returned None")
-                    print("[Galery_Thumb] show_pic: returned None: " + str(img_path))
+                    print(
+                        "[Galery_Thumb] show_pic: returned None: " +
+                        str(img_path))
                     return
 
                 try:
@@ -271,7 +287,9 @@ class Galery_Thumb(Screen):
                     self[thumb_widget].instance.setPixmap(ptr)
                     self[thumb_widget].show()
                 except Exception as e:
-                    print("[Galery_Thumb] show_pic Error while setPixmap: " + str(e))
+                    print(
+                        "[Galery_Thumb] show_pic Error while setPixmap: " +
+                        str(e))
 
     def key_left(self):
         """Handle left key press."""
@@ -344,7 +362,8 @@ class Galery_Thumb(Screen):
                         if isfile(file_path):
                             remove(file_path)
                     except Exception as e:
-                        print("[Galery_Thumb] Error while removing file: " + str(e))
+                        print(
+                            "[Galery_Thumb] Error while removing file: " + str(e))
             else:
                 print("[Galery_Thumb] Thumbnail folder does not exist")
         else:
@@ -449,7 +468,7 @@ class Pic_Full_View(Screen):
         self.picload = ePicLoad()
         try:
             self.picload.PictureData.get().append(self.finish_decode)
-        except:
+        except BaseException:
             self.picload.PictureData.connect(self.finish_decode)
 
         self.slide_timer = eTimer()
@@ -516,8 +535,9 @@ class Pic_Full_View(Screen):
         text = ''
         try:
             text = pic_info.split('\n', 1)
-            text = '(' + str(self.index + 1) + '/' + str(self.max_entry + 1) + ') ' + text[0].split('/')[-1]
-        except:
+            text = '(' + str(self.index + 1) + '/' + \
+                str(self.max_entry + 1) + ') ' + text[0].split('/')[-1]
+        except BaseException:
             pass
 
         self.curr_pic = []
@@ -549,7 +569,8 @@ class Pic_Full_View(Screen):
 
     def slide_pic(self):
         """Slide to next picture automatically."""
-        print("[Galery_Thumb] slide_pic slide to next Picture index: " + str(self.lastindex))
+        print("[Galery_Thumb] slide_pic slide to next Picture index: " +
+              str(self.lastindex))
         self.play_pause()
         self.show_now = True
         self.show_picture()
