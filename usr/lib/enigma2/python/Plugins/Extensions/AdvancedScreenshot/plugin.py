@@ -164,10 +164,14 @@ def get_mounted_devices():
 # Configuration
 config.plugins.AdvancedScreenshot = ConfigSubsection()
 config.plugins.AdvancedScreenshot.enabled = ConfigEnableDisable(default=True)
-config.plugins.AdvancedScreenshot.freezeframe = ConfigEnableDisable(default=False)
-config.plugins.AdvancedScreenshot.allways_save = ConfigEnableDisable(default=False)
-config.plugins.AdvancedScreenshot.fixed_aspect_ratio = ConfigEnableDisable(default=False)
-config.plugins.AdvancedScreenshot.always_43 = ConfigEnableDisable(default=False)
+config.plugins.AdvancedScreenshot.freezeframe = ConfigEnableDisable(
+    default=False)
+config.plugins.AdvancedScreenshot.allways_save = ConfigEnableDisable(
+    default=False)
+config.plugins.AdvancedScreenshot.fixed_aspect_ratio = ConfigEnableDisable(
+    default=False)
+config.plugins.AdvancedScreenshot.always_43 = ConfigEnableDisable(
+    default=False)
 config.plugins.AdvancedScreenshot.bi_cubic = ConfigEnableDisable(default=False)
 
 config.plugins.AdvancedScreenshot.picturesize = ConfigSelection(
@@ -224,7 +228,8 @@ config.plugins.AdvancedScreenshot.buttonchoice = ConfigSelection(
 )
 
 config.plugins.AdvancedScreenshot.switchhelp = ConfigYesNo(default=False)
-config.plugins.AdvancedScreenshot.capture_delay = ConfigInteger(default=0, limits=(0, 10))
+config.plugins.AdvancedScreenshot.capture_delay = ConfigInteger(
+    default=0, limits=(0, 10))
 
 # Dummy for padding/compatibility
 config.plugins.AdvancedScreenshot.dummy = ConfigSelection(
@@ -242,7 +247,8 @@ def cleanup_tmp_files(tmp_folder="/tmp", max_age_seconds=3600):
     """
     now = time.time()
     for filename in listdir(tmp_folder):
-        if filename.startswith("web_grab_") and (filename.endswith(".png") or filename.endswith(".jpg")):
+        if filename.startswith("web_grab_") and (
+                filename.endswith(".png") or filename.endswith(".jpg")):
             filepath = tmp_folder + "/" + filename
             try:
                 file_stat = stat(filepath)
@@ -394,7 +400,8 @@ class WebGrabResource(resource.Resource):
                 raise ValueError("[AdvancedScreenshot] Format not supported")
 
             # Validate resolution
-            if resolution != 'default' and not match(r"^\d+(x\d+)?$", resolution):
+            if resolution != 'default' and not match(
+                    r"^\d+(x\d+)?$", resolution):
                 raise ValueError("[AdvancedScreenshot] Invalid resolution")
 
             # Generate filename
@@ -513,7 +520,9 @@ class ScreenshotCore:
             retval: Return value
             extra_args: Extra arguments (filename)
         """
-        print("[AdvancedScreenshot][_capture_callback] extra_args: " + str(extra_args))
+        print(
+            "[AdvancedScreenshot][_capture_callback] extra_args: " +
+            str(extra_args))
         filename = extra_args
         error_msg = ""
 
@@ -536,7 +545,8 @@ class ScreenshotCore:
 
         print("[AdvancedScreenshot][INFO] Screenshot saved: " + str(filename))
         if config.plugins.AdvancedScreenshot.freezeframe.value:
-            self.session.openWithCallback(self._freeze_callback, FreezeFrame, filename)
+            self.session.openWithCallback(
+                self._freeze_callback, FreezeFrame, filename)
         else:
             self._show_message(_("Screenshot saved successfully!"))
 
@@ -618,8 +628,9 @@ class FreezeFrame(Screen):
         })
         try:
             self.picload.PictureData.get().append(self.decode_picture)
-        except:
-            self.picload_conn = self.picload.PictureData.connect(self.decode_picture)
+        except BaseException:
+            self.picload_conn = self.picload.PictureData.connect(
+                self.decode_picture)
         print("[FreezeFrame] File " + self.filename)
         self.onLayoutFinish.append(self.show_picture)
 
@@ -628,8 +639,10 @@ class FreezeFrame(Screen):
         if exists(self.filename):
             print("[FreezeFrame] show_picture: " + str(self.filename))
 
-        scalex = self.scale[0] if isinstance(self.scale[0], (int, float)) else 1
-        scaley = self.scale[1] if isinstance(self.scale[1], (int, float)) else 1
+        scalex = self.scale[0] if isinstance(
+            self.scale[0], (int, float)) else 1
+        scaley = self.scale[1] if isinstance(
+            self.scale[1], (int, float)) else 1
 
         self.picload.setPara([
             self["preview"].instance.size().width(),
@@ -645,8 +658,9 @@ class FreezeFrame(Screen):
             self.picload = ePicLoad()
             try:
                 self.picload.PictureData.get().append(self.decode_picture)
-            except:
-                self.picload_conn = self.picload.PictureData.connect(self.decode_picture)
+            except BaseException:
+                self.picload_conn = self.picload.PictureData.connect(
+                    self.decode_picture)
 
     def decode_picture(self, pic_info=None):
         """Decode and display picture.
@@ -709,8 +723,9 @@ class ScreenshotGallery(Screen):
         self.picload = ePicLoad()
         try:
             self.picload.PictureData.get().append(self.decode_picture)
-        except:
-            self.picload_conn = self.picload.PictureData.connect(self.decode_picture)
+        except BaseException:
+            self.picload_conn = self.picload.PictureData.connect(
+                self.decode_picture)
 
         self['info'] = Label()
         self["list"].onSelectionChanged.append(self.show_picture)
@@ -737,10 +752,15 @@ class ScreenshotGallery(Screen):
                 f for f in listdir(self.full_path)
                 if f.endswith(image_extensions)
             ], key=lambda x: getctime(join(self.full_path, x)), reverse=True)
-            print("[ScreenshotGallery] Found " + str(len(self.screenshots)) + " screenshots")
+            print("[ScreenshotGallery] Found " +
+                  str(len(self.screenshots)) + " screenshots")
             self["list"].setList(self.screenshots)
         except Exception as e:
-            self.session.open(MessageBox, _("Error loading gallery: ") + str(e), MessageBox.TYPE_ERROR)
+            self.session.open(
+                MessageBox,
+                _("Error loading gallery: ") +
+                str(e),
+                MessageBox.TYPE_ERROR)
 
     def show_picture(self):
         """Show selected picture in preview."""
@@ -751,8 +771,10 @@ class ScreenshotGallery(Screen):
         self.filename = self.full_path + str(fname)
         print('[ScreenshotGallery] show_picture: ' + self.filename)
 
-        scalex = self.scale[0] if isinstance(self.scale[0], (int, float)) else 1
-        scaley = self.scale[1] if isinstance(self.scale[1], (int, float)) else 1
+        scalex = self.scale[0] if isinstance(
+            self.scale[0], (int, float)) else 1
+        scaley = self.scale[1] if isinstance(
+            self.scale[1], (int, float)) else 1
 
         self.picload.setPara([
             self["preview"].instance.size().width(),
@@ -768,8 +790,9 @@ class ScreenshotGallery(Screen):
             self.picload = ePicLoad()
             try:
                 self.picload.PictureData.get().append(self.decode_picture)
-            except:
-                self.picload_conn = self.picload.PictureData.connect(self.decode_picture)
+            except BaseException:
+                self.picload_conn = self.picload.PictureData.connect(
+                    self.decode_picture)
 
     def decode_picture(self, pic_info=""):
         """Decode and display picture.
@@ -786,7 +809,8 @@ class ScreenshotGallery(Screen):
                 self.filename = self.full_path + str(fname)
                 ptr = self.picload.getData()
 
-            print("[ScreenshotGallery] decode_picture filename: " + str(self.filename))
+            print("[ScreenshotGallery] decode_picture filename: " +
+                  str(self.filename))
             self["info"].setText(_(self.filename))
             if ptr:
                 self["preview"].instance.setPixmap(ptr)
@@ -852,7 +876,10 @@ class ScreenshotGallery(Screen):
                     remove(join(self.full_path, selection))
                     self._load_screenshots()
                 except Exception as e:
-                    self.session.open(MessageBox, _("Delete failed: ") + str(e), MessageBox.TYPE_ERROR)
+                    self.session.open(
+                        MessageBox,
+                        _("Delete failed: ") + str(e),
+                        MessageBox.TYPE_ERROR)
 
 
 class ScreenshotPreview(Screen):
@@ -873,7 +900,9 @@ class ScreenshotPreview(Screen):
         Screen.__init__(self, session)
         self.filepath = filepath
         self["image"] = Pixmap()
-        self["actions"] = ActionMap(["OkCancelActions"], {"cancel": self.close})
+        self["actions"] = ActionMap(
+            ["OkCancelActions"], {
+                "cancel": self.close})
         self._show_image()
 
     def _show_image(self):
@@ -881,8 +910,9 @@ class ScreenshotPreview(Screen):
         self.picload = ePicLoad()
         try:
             self.picload.PictureData.get().append(self._update_image)
-        except:
-            self.picload_conn = self.picload.PictureData.connect(self._update_image)
+        except BaseException:
+            self.picload_conn = self.picload.PictureData.connect(
+                self._update_image)
 
         self.picload.setPara((
             SIZE_W, SIZE_H,
@@ -930,7 +960,11 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
         self._on_config_entry_changed = []
         self["config"] = ConfigList(self.list)
         self._create_config()
-        ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self._on_config_entry_changed)
+        ConfigListScreen.__init__(
+            self,
+            self.list,
+            session=self.session,
+            on_change=self._on_config_entry_changed)
 
         self["actions"] = ActionMap(
             ["SetupActions", "ColorActions", "VirtualKeyboardActions"],
@@ -957,7 +991,10 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
         # Header
         section = '--------------------------------------( Advanced Screenshot Setup )--------------------------------------'
         self.list.append((_(section), NoSave(ConfigNothing())))
-        self.list.append(getConfigListEntry(_("Enable plugin"), config.plugins.AdvancedScreenshot.enabled))
+        self.list.append(
+            getConfigListEntry(
+                _("Enable plugin"),
+                config.plugins.AdvancedScreenshot.enabled))
 
         if config.plugins.AdvancedScreenshot.enabled.value:
             # Image format
@@ -979,10 +1016,10 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
             ))
 
             # Force 4:3 output
-            self.list.append(getConfigListEntry(
-                _("Always output 4:3 image (adds letterbox if source is 16:9)"),
-                config.plugins.AdvancedScreenshot.always_43
-            ))
+            self.list.append(
+                getConfigListEntry(
+                    _("Always output 4:3 image (adds letterbox if source is 16:9)"),
+                    config.plugins.AdvancedScreenshot.always_43))
 
             # Bicubic resize
             self.list.append(getConfigListEntry(
@@ -1018,16 +1055,22 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
             button_name = BUTTON_MAP.get(current_value, _("Unknown"))
 
             if current_value in ("398", "399", "400"):
-                self.list.append(getConfigListEntry(
-                    _("Long press required for ") + button_name + _(" long ' can be used."),
-                    config.plugins.AdvancedScreenshot.dummy
-                ))
+                self.list.append(
+                    getConfigListEntry(
+                        _("Long press required for ") +
+                        button_name +
+                        _(" long ' can be used."),
+                        config.plugins.AdvancedScreenshot.dummy))
                 config.plugins.AdvancedScreenshot.switchhelp.setValue(0)
             else:
-                self.list.append(getConfigListEntry(
-                    _("Press type for ") + button_name + _(" ' button instead of ' ") + button_name + _(" long:"),
-                    config.plugins.AdvancedScreenshot.switchhelp
-                ))
+                self.list.append(
+                    getConfigListEntry(
+                        _("Press type for ") +
+                        button_name +
+                        _(" ' button instead of ' ") +
+                        button_name +
+                        _(" long:"),
+                        config.plugins.AdvancedScreenshot.switchhelp))
 
             # Timeout
             self.list.append(getConfigListEntry(
@@ -1150,12 +1193,16 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
         fullpath = []
         base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
         full_path = base_path + "/screenshots/"
-        print("[AdvancedScreenshotConfig] on_pic_view full_path: " + str(full_path))
+        print(
+            "[AdvancedScreenshotConfig] on_pic_view full_path: " +
+            str(full_path))
 
         if check_folder(full_path):
             for filename in listdir(full_path):
                 if isfile(full_path + filename):
-                    print("[AdvancedScreenshotConfig] on_pic_view file: " + str(filename))
+                    print(
+                        "[AdvancedScreenshotConfig] on_pic_view file: " +
+                        str(filename))
                     if filename.lower().endswith(('.jpg', '.png', '.bmp', '.gif')):
                         fullpath.append(filename)
             self.fullpath = fullpath
@@ -1205,7 +1252,8 @@ def session_start(reason, session=None, **kwargs):
     Returns:
         ScreenshotCore instance or None
     """
-    print("[AdvancedScreenshot] session_start: " + str(reason) + " session " + str(session))
+    print("[AdvancedScreenshot] session_start: " +
+          str(reason) + " session " + str(session))
 
     if reason == 0 and session:
         # Register web interface
@@ -1240,19 +1288,17 @@ def plugins(**kwargs):
     return [
         PluginDescriptor(
             where=PluginDescriptor.WHERE_SESSIONSTART,
-            fnc=session_start
-        ),
+            fnc=session_start),
         PluginDescriptor(
             name=_("Advanced Screenshot"),
-            description=_("Professional screenshot tool") + " " + CURRENT_VERSION,
+            description=_("Professional screenshot tool") +
+            " " +
+            CURRENT_VERSION,
             where=PluginDescriptor.WHERE_PLUGINMENU,
             icon="plugin.png",
-            fnc=setup
-        ),
+            fnc=setup),
         PluginDescriptor(
             name=_("Advanced Screenshot Gallery"),
             description=_("View captured screenshots"),
             where=PluginDescriptor.WHERE_EXTENSIONSMENU,
-            fnc=lambda session: session.open(ScreenshotGallery)
-        )
-    ]
+            fnc=lambda session: session.open(ScreenshotGallery))]

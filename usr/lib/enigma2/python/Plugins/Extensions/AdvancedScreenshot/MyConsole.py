@@ -48,7 +48,8 @@ class ConsoleItem:
 
         # Log command execution
         if len(cmd) > 1:
-            print("[Console] Processing command " + str(cmd) + " with arguments " + str(cmd[1:]))
+            print("[Console] Processing command " +
+                  str(cmd) + " with arguments " + str(cmd[1:]))
         else:
             print("[Console] Processing command line " + str(cmd))
 
@@ -63,7 +64,12 @@ class ConsoleItem:
             try:
                 waitpid(pid, 0)
             except OSError as err:
-                print("[Console] Error " + str(err.errno) + ": Wait for command on PID " + str(pid) + " to terminate failed! " + str(err.strerror))
+                print("[Console] Error " +
+                      str(err.errno) +
+                      ": Wait for command on PID " +
+                      str(pid) +
+                      " to terminate failed! " +
+                      str(err.strerror))
 
     def dataAvailCB(self, data):
         """Callback for data availability from command output.
@@ -112,9 +118,12 @@ class ConsoleItem:
             try:
                 with open(self.filenamesaved, "wb") as f:
                     f.write(data)
-                    print("[Console][Debug] Successfully wrote: " + str(self.filenamesaved))
+                    print("[Console][Debug] Successfully wrote: " +
+                          str(self.filenamesaved))
             except Exception as e:
-                print("[Console][Error] Failed to write binary data to file: " + str(e))
+                print(
+                    "[Console][Error] Failed to write binary data to file: " +
+                    str(e))
                 return
 
             # Call user callback with results
@@ -153,7 +162,12 @@ class MyConsole:
             extra_args = []
 
         print("[Console]command: " + str(cmd))
-        return ConsoleItem(self.appContainers, cmd, callback, extra_args, self.binary)
+        return ConsoleItem(
+            self.appContainers,
+            cmd,
+            callback,
+            extra_args,
+            self.binary)
 
     def eBatch(self, cmds, callback, extra_args=None, debug=False):
         """Execute multiple commands in batch.
@@ -182,7 +196,8 @@ class MyConsole:
         (cmds, callback, extra_args) = _extra_args
 
         if self.debug:
-            print("[Console][eBatch] retval=" + str(retval) + ", cmds left=" + str(len(cmds)) + ", data:\n" + str(data))
+            print("[Console][eBatch] retval=" + str(retval) +
+                  ", cmds left=" + str(len(cmds)) + ", data:\n" + str(data))
 
         if len(cmds):
             # Execute next command in batch
