@@ -15,211 +15,183 @@ msgstr ""
 "X-Generator: Poedit 3.6\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#, fuzzy
-msgid "' button instead of '"
-msgstr " ' pulsante ' invece di ' "
-
-#, fuzzy
-msgid "Add -n option to force no stretching."
-msgstr "Correggi le proporzioni (aggiungi -n per forzare nessun allungamento)"
-
-#, fuzzy
-msgid "Add letterbox if source is 16:9."
-msgstr "Emetti sempre un'immagine 4:3 (aggiunge il letterbox se la sorgente è 16:9)"
-
-msgid "Advanced Screenshot"
-msgstr "Screenshot avanzato"
-
-msgid "Advanced Screenshot Gallery"
-msgstr "Galleria di screenshot avanzata"
-
-#, fuzzy
-msgid "Advanced Screenshot Setup"
-msgstr "Screenshot avanzato"
-
-msgid "Always output 4:3 image"
+#: plugin.py:126
+msgid "Hard Disk"
 msgstr ""
 
-msgid "Always output 4:3 image (adds letterbox if source is 16:9)"
-msgstr "Emetti sempre un'immagine 4:3 (aggiunge il letterbox se la sorgente è 16:9)"
-
-msgid "Always save screenshots"
-msgstr "Salva sempre  Screenshots"
-
-msgid "Are you sure you want to delete this screenshot?"
-msgstr "Vuoi davvero eliminare questo screenshot?"
-
-msgid "BMP"
+#: plugin.py:127
+msgid "USB Drive"
 msgstr ""
 
-msgid "Choose which button triggers screenshot."
+#: plugin.py:137
+msgid "Network mount"
 msgstr ""
 
+#: plugin.py:139
+msgid "Temporary"
+msgstr "Temporanea"
+
+#: plugin.py:160
 msgid "Default Resolution"
 msgstr "Risoluzione predefinita"
 
-#, fuzzy
-msgid "Delete failed:"
-msgstr "Eliminazione non riuscita: "
-
-msgid "Enable or disable the Advanced Screenshot plugin."
+#: plugin.py:168
+msgid "JPEG 100%"
 msgstr ""
 
-msgid "Enable plugin"
-msgstr "Abilita plugin"
+#: plugin.py:169
+msgid "JPEG 90%"
+msgstr ""
 
+#: plugin.py:170
+msgid "JPEG 80%"
+msgstr ""
+
+#: plugin.py:171
+msgid "JPEG 60%"
+msgstr ""
+
+#: plugin.py:172
+msgid "PNG"
+msgstr ""
+
+#: plugin.py:173
+msgid "BMP"
+msgstr ""
+
+#: plugin.py:190
+msgid "OSD Only"
+msgstr "Solo OSD"
+
+#: plugin.py:191
+msgid "Video Only"
+msgstr "Solo Video"
+
+#: plugin.py:192
+msgid "OSD + Video"
+msgstr "OSD + Video"
+
+#: plugin.py:204
+msgid "no message"
+msgstr "nessun messaggio"
+
+#: plugin.py:205
+msgid "no timeout"
+msgstr "nessun timeout"
+
+#: plugin.py:465
 msgid "Error during capture:\n"
 msgstr ""
 "Errore durante la cattura:\n"
 " \n"
 
-#, fuzzy
-msgid "Error loading gallery:"
-msgstr "Errore durante il caricamento della galleria: "
-
-msgid "Fix aspect ratio"
-msgstr ""
-
-msgid "Fix aspect ratio (adds -n to force no stretching)"
-msgstr "Correggi le proporzioni (aggiungi -n per forzare nessun allungamento)"
-
-msgid "Folder where screenshots are saved."
-msgstr ""
-
-msgid "Freeze frame preview"
-msgstr "Anteprima del fermo immagine"
-
-msgid "Freeze the frame preview when taking screenshot."
-msgstr ""
-
-msgid "Hard Disk"
-msgstr ""
-
-msgid "Image format"
-msgstr "Formato Immagine"
-
-msgid "JPEG 100%"
-msgstr ""
-
-msgid "JPEG 60%"
-msgstr ""
-
-msgid "JPEG 80%"
-msgstr ""
-
-msgid "JPEG 90%"
-msgstr ""
-
-#, fuzzy
-msgid "Long press must be used for this button."
-msgstr "È richiesta una pressione prolungata per"
-
-msgid "Long press required for"
-msgstr "È richiesta una pressione prolungata per"
-
-#, fuzzy
-msgid "Long press required for button"
-msgstr "È richiesta una pressione prolungata per"
-
-msgid "Message timeout (seconds)"
-msgstr "Timeout del messaggio (secondi)"
-
-msgid "Network mount"
-msgstr ""
-
-msgid "OSD + Video"
-msgstr "OSD + Video"
-
-msgid "OSD Only"
-msgstr "Solo OSD"
-
-msgid "PNG"
-msgstr ""
-
-msgid "Press OK to save - EXIT to cancel"
-msgstr "Premere OK per salvare - ESCI per annullare"
-
-#, fuzzy
-msgid "Press type for"
-msgstr "Premere il tipo di tasto per "
-
-#, fuzzy
-msgid "Press type for button"
-msgstr "Premere il tipo di tasto per "
-
-msgid "Professional screenshot tool"
-msgstr "Strumento professionale per screenshot"
-
-msgid "Resolution"
-msgstr "Risoluzione"
-
-msgid "Save path (requires restart)"
-msgstr "Salva percorso (richiede il riavvio)"
-
-msgid "Save screenshots even if frame is frozen."
-msgstr ""
-
+#: plugin.py:492 plugin.py:496
 msgid "Screenshot saved successfully!"
 msgstr "Screenshot salvato con successo!"
 
-msgid "Select screenshot button"
-msgstr "Seleziona il pulsante per lo screenshot"
+#: plugin.py:534
+msgid "Press OK to save - EXIT to cancel"
+msgstr "Premere OK per salvare - ESCI per annullare"
 
-msgid "Select the image format for screenshots."
-msgstr ""
+#: plugin.py:646
+msgid "Error loading gallery: "
+msgstr "Errore durante il caricamento della galleria: "
 
-msgid "Select the resolution for screenshots."
-msgstr ""
+#: plugin.py:725
+msgid "Are you sure you want to delete this screenshot?"
+msgstr "Vuoi davvero eliminare questo screenshot?"
 
-msgid "Set press type for button instead of long press."
-msgstr ""
+#: plugin.py:734
+msgid "Delete failed: "
+msgstr "Eliminazione non riuscita: "
 
+#: plugin.py:781
 msgid "Settings"
 msgstr "Impostazioni"
 
-msgid "Slower but smoother image resizing."
-msgstr ""
+#: plugin.py:810
+msgid "Enable plugin"
+msgstr "Abilita plugin"
 
-msgid "Temporary"
-msgstr "Temporanea"
+#: plugin.py:816
+msgid "Image format"
+msgstr "Formato Immagine"
 
-msgid "Time to display messages on screen."
-msgstr ""
+#: plugin.py:822
+msgid "Resolution"
+msgstr "Risoluzione"
 
-msgid "USB Drive"
-msgstr ""
+#: plugin.py:828
+msgid "Fix aspect ratio (adds -n to force no stretching)"
+msgstr "Correggi le proporzioni (aggiungi -n per forzare nessun allungamento)"
 
-msgid "Unknown"
-msgstr "Sconosciuto"
+#: plugin.py:834
+msgid "Always output 4:3 image (adds letterbox if source is 16:9)"
+msgstr "Emetti sempre un'immagine 4:3 (aggiunge il letterbox se la sorgente è 16:9)"
 
-msgid "Use bicubic resize"
-msgstr ""
-
+#: plugin.py:840
 msgid "Use bicubic resize (slower, but smoother image)"
 msgstr "Utilizza il ridimensionamento bicubico (immagine più lenta, ma più fluida)"
 
-msgid "Video Only"
-msgstr "Solo Video"
+#: plugin.py:846
+msgid "Freeze frame preview"
+msgstr "Anteprima del fermo immagine"
 
-msgid "View captured screenshots"
-msgstr "Mostra Screenshots catturato"
+#: plugin.py:852
+msgid "Always save screenshots"
+msgstr "Salva sempre  Screenshots"
 
-#, fuzzy
-msgid "long ' can be used."
+#: plugin.py:858
+msgid "Save path (requires restart)"
+msgstr "Salva percorso (richiede il riavvio)"
+
+#: plugin.py:864
+msgid "Select screenshot button"
+msgstr "Seleziona il pulsante per lo screenshot"
+
+#: plugin.py:869 plugin.py:992
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#: plugin.py:873
+msgid "Long press required for"
+msgstr "È richiesta una pressione prolungata per"
+
+#: plugin.py:873
+msgid " long ' can be used."
 msgstr " lungo può essere usato."
 
-#, fuzzy
-msgid "long:"
+#: plugin.py:879
+msgid "Press type for "
+msgstr "Premere il tipo di tasto per "
+
+#: plugin.py:879
+msgid " ' button instead of ' "
+msgstr " ' pulsante ' invece di ' "
+
+#: plugin.py:879
+msgid " long:"
 msgstr " lungo:"
 
-msgid "no message"
-msgstr "nessun messaggio"
+#: plugin.py:885
+msgid "Message timeout (seconds)"
+msgstr "Timeout del messaggio (secondi)"
 
-msgid "no timeout"
-msgstr "nessun timeout"
+#: plugin.py:1022
+msgid "Advanced Screenshot"
+msgstr "Screenshot avanzato"
 
-msgid "please wait, loading picture..."
-msgstr ""
+#: plugin.py:1023
+msgid "Professional screenshot tool"
+msgstr "Strumento professionale per screenshot"
+
+#: plugin.py:1029
+msgid "Advanced Screenshot Gallery"
+msgstr "Galleria di screenshot avanzata"
+
+#: plugin.py:1030
+msgid "View captured screenshots"
+msgstr "Mostra Screenshots catturato"
 
 #~ msgid "Button behavior warning"
 #~ msgstr "Avviso sul comportamento del pulsante"

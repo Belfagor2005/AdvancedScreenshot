@@ -65,10 +65,11 @@ from .MyConsole import MyConsole
 # Constants
 SIZE_W = getDesktop(0).size().width()
 SIZE_H = getDesktop(0).size().height()
-currversion = '1.2'
+CURRENT_VERSION = '1.2'
 
 
-def getScale():
+def get_scale():
+    """Get framebuffer scale."""
     return AVSwitch().getFramebufferScale()
 
 
@@ -86,7 +87,6 @@ BUTTON_MAP = {
     "102": "KEY_HOME",
     "113": "Mute",
     "167": "KEY_RECORD",
-    # "352": "Help",
     "138": "Help",
     "358": "Info",
     "362": "Timer",
@@ -110,55 +110,66 @@ MODE_MAP = {
 }
 
 
-# auto mount device
-def getMountedDevs():
+def get_mounted_devices():
+    """Get list of mounted devices that are writable.
 
-    def handleMountpoint(loc):
-        original_mp, original_desc = loc
+    Returns:
+        List of tuples (mount_point, description)
+    """
+    def handle_mountpoint(location):
+        """Normalize mountpoint and create description."""
+        original_mp, original_desc = location
         normalized_mp = original_mp.rstrip('/') + '/'
         if original_desc:
-            new_desc = f"{original_desc} ({normalized_mp})"
+            new_desc = original_desc + " (" + normalized_mp + ")"
         else:
-            new_desc = f"({normalized_mp})"
+            new_desc = "(" + normalized_mp + ")"
         return (normalized_mp, new_desc)
 
-    mountedDevs = [
+    # Start with standard media locations
+    mounted_devices = [
         (resolveFilename(SCOPE_MEDIA, 'hdd'), _('Hard Disk')),
         (resolveFilename(SCOPE_MEDIA, 'usb'), _('USB Drive'))
     ]
-    mountedDevs += [
-        (p.mountpoint, _(p.description) if p.description else '')
-        for p in harddiskmanager.getMountedPartitions(True)
+
+    # Add mounted partitions
+    mounted_devices += [
+        (partition.mountpoint, _(partition.description) if partition.description else '')
+        for partition in harddiskmanager.getMountedPartitions(True)
     ]
-    mountedDevs = [
-        path for path in mountedDevs if isdir(
-            path[0]) and access(
-            path[0], W_OK | X_OK)]
 
-    netDir = resolveFilename(SCOPE_MEDIA, 'net')
-    if isdir(netDir):
-        mountedDevs += [(join(netDir, p), _('Network mount'))
-                        for p in listdir(netDir)]
+    # Filter only writable directories
+    mounted_devices = [
+        path for path in mounted_devices
+        if isdir(path[0]) and access(path[0], W_OK | X_OK)
+    ]
 
-    mountedDevs += [(join('/', 'tmp'), _('Temporary'))]
+    # Add network mounts
+    net_dir = resolveFilename(SCOPE_MEDIA, 'net')
+    if isdir(net_dir):
+        mounted_devices += [
+            (join(net_dir, path), _('Network mount'))
+            for path in listdir(net_dir)
+        ]
 
-    mountedDevs = list(map(handleMountpoint, mountedDevs))
+    # Add temporary directory
+    mounted_devices += [(join('/', 'tmp'), _('Temporary'))]
 
-    return mountedDevs
+    # Normalize all mountpoints
+    mounted_devices = list(map(handle_mountpoint, mounted_devices))
+
+    return mounted_devices
 
 
 # Configuration
 config.plugins.AdvancedScreenshot = ConfigSubsection()
 config.plugins.AdvancedScreenshot.enabled = ConfigEnableDisable(default=True)
-config.plugins.AdvancedScreenshot.freezeframe = ConfigEnableDisable(
-    default=False)
-config.plugins.AdvancedScreenshot.allways_save = ConfigEnableDisable(
-    default=False)
-config.plugins.AdvancedScreenshot.fixed_aspect_ratio = ConfigEnableDisable(
-    default=False)
-config.plugins.AdvancedScreenshot.always_43 = ConfigEnableDisable(
-    default=False)
+config.plugins.AdvancedScreenshot.freezeframe = ConfigEnableDisable(default=False)
+config.plugins.AdvancedScreenshot.allways_save = ConfigEnableDisable(default=False)
+config.plugins.AdvancedScreenshot.fixed_aspect_ratio = ConfigEnableDisable(default=False)
+config.plugins.AdvancedScreenshot.always_43 = ConfigEnableDisable(default=False)
 config.plugins.AdvancedScreenshot.bi_cubic = ConfigEnableDisable(default=False)
+
 config.plugins.AdvancedScreenshot.picturesize = ConfigSelection(
     default="1920x1080",
     choices=[
@@ -168,7 +179,6 @@ config.plugins.AdvancedScreenshot.picturesize = ConfigSelection(
         ("default", _("Default Resolution"))
     ]
 )
-
 
 config.plugins.AdvancedScreenshot.pictureformat = ConfigSelection(
     default="-j 90",
@@ -183,15 +193,10 @@ config.plugins.AdvancedScreenshot.pictureformat = ConfigSelection(
 )
 
 config.plugins.AdvancedScreenshot.path = ConfigSelection(
-    default="/tmp/", choices=getMountedDevs())
-"""
-    # choices=[
-        # ("/media/hdd/", _("Hard Disk")),
-        # ("/media/usb/", _("USB Drive")),
-        # ("/tmp/", _("Temporary"))
-    # ]
-# )
-"""
+    default="/tmp/",
+    choices=get_mounted_devices()
+)
+
 config.plugins.AdvancedScreenshot.picturetype = ConfigSelection(
     default="video",
     choices=[
@@ -200,7 +205,6 @@ config.plugins.AdvancedScreenshot.picturetype = ConfigSelection(
         ("All", _("OSD + Video"))
     ]
 )
-
 
 config.plugins.AdvancedScreenshot.timeout = ConfigSelection(
     default="3",
@@ -213,20 +217,16 @@ config.plugins.AdvancedScreenshot.timeout = ConfigSelection(
         ("0", _("no timeout"))
     ]
 )
+
 config.plugins.AdvancedScreenshot.buttonchoice = ConfigSelection(
     default="138",
     choices=BUTTON_MAP
 )
+
 config.plugins.AdvancedScreenshot.switchhelp = ConfigYesNo(default=False)
-"""
-config.plugins.AdvancedScreenshot.quality = ConfigSelection(
-    default="90",
-    choices=[str(x) for x in range(50, 101, 10)]
-)
-"""
-config.plugins.AdvancedScreenshot.capture_delay = ConfigInteger(
-    default=0, limits=(0, 10))
-# Dummy per padding/compatibility
+config.plugins.AdvancedScreenshot.capture_delay = ConfigInteger(default=0, limits=(0, 10))
+
+# Dummy for padding/compatibility
 config.plugins.AdvancedScreenshot.dummy = ConfigSelection(
     default="1",
     choices=[("1", " ")]
@@ -234,31 +234,49 @@ config.plugins.AdvancedScreenshot.dummy = ConfigSelection(
 
 
 def cleanup_tmp_files(tmp_folder="/tmp", max_age_seconds=3600):
-    """Cleanup Utility"""
+    """Clean up temporary screenshot files.
+
+    Args:
+        tmp_folder: Temporary folder path
+        max_age_seconds: Maximum age for files to keep
+    """
     now = time.time()
     for filename in listdir(tmp_folder):
-        if filename.startswith("web_grab_") and (
-                filename.endswith(".png") or filename.endswith(".jpg")):
+        if filename.startswith("web_grab_") and (filename.endswith(".png") or filename.endswith(".jpg")):
             filepath = tmp_folder + "/" + filename
             try:
-                statc = stat(filepath)
-                if now - statc.st_mtime > max_age_seconds:
+                file_stat = stat(filepath)
+                if now - file_stat.st_mtime > max_age_seconds:
                     remove(filepath)
             except Exception:
                 pass
 
 
-def checkfolder(folder):
+def check_folder(folder):
+    """Check if folder exists, create if it doesn't.
+
+    Args:
+        folder: Folder path to check
+
+    Returns:
+        True if folder exists or was created successfully
+    """
     if exists(folder):
         return True
     else:
         makedirs(folder, exist_ok=True)
         return True
-    return False
 
 
-def _get_extension(fmt):
-    """Mappa formato -> estensione"""
+def get_extension(fmt):
+    """Map format string to file extension.
+
+    Args:
+        fmt: Format string (e.g., '-j 90', '-p', 'bmp')
+
+    Returns:
+        File extension with dot (e.g., '.jpg', '.png', '.bmp')
+    """
     if fmt.startswith('-j'):
         return '.jpg'
     elif fmt == '-p':
@@ -268,105 +286,122 @@ def _get_extension(fmt):
     return '.jpg'  # fallback
 
 
-def _generate_filename():
+def generate_filename():
+    """Generate unique filename for screenshot.
+
+    Returns:
+        Full path to screenshot file or None on error
+    """
     base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
-    full_path = f"{base_path}/screenshots"
+    full_path = base_path + "/screenshots"
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     pic_format = config.plugins.AdvancedScreenshot.pictureformat.value
-    if pic_format.startswith("-j"):
-        ext = ".jpg"
-    elif pic_format == "-p":
-        ext = ".png"
-    else:
-        ext = ".bmp"
+    extension = get_extension(pic_format)
+
     try:
         makedirs(full_path, exist_ok=True)
         for path in [base_path, full_path]:
             if not exists(path):
-                raise Exception(f"Folder {path} does not exist")
+                raise Exception("Folder " + path + " does not exist")
             if not access(path, W_OK):
-                raise Exception(f"Write permission denied for {path}")
+                raise Exception("Write permission denied for " + path)
         chmod(full_path, 0o777)
     except Exception as e:
-        print(f"[ERROR] Creating directory: {e}")
+        print("[ERROR] Creating directory: " + str(e))
         return None
 
-    return f"{full_path}/screenshot_{timestamp}{ext}"
+    return full_path + "/screenshot_" + timestamp + extension
 
 
-def _build_grab_command(filename):
+def build_grab_command(filename):
+    """Build grab command for screenshot capture.
+
+    Args:
+        filename: Output filename
+
+    Returns:
+        List of command arguments
+    """
     cmd = ["/usr/bin/grab"]
+
+    # Add -d parameter if not using dpkg
     if not exists('/var/lib/dpkg/status'):
-        cmd += ["-d"]  # Critical parameters missing
+        cmd += ["-d"]
 
-    picturetype_map = {
-        "osd": "-o",
-        "video": "-v",
-        "All": ""
-    }
+    # Add picture type parameter
     pic_type = config.plugins.AdvancedScreenshot.picturetype.value
-    if pic_type in picturetype_map and picturetype_map[pic_type]:
-        cmd.append(picturetype_map[pic_type])
+    if pic_type in MODE_MAP and MODE_MAP[pic_type]:
+        cmd.append(MODE_MAP[pic_type])
 
-    fixed_aspect_ratio = config.plugins.AdvancedScreenshot.fixed_aspect_ratio.value
-    if fixed_aspect_ratio:
+    # Add aspect ratio fix
+    if config.plugins.AdvancedScreenshot.fixed_aspect_ratio.value:
         cmd.append("-n")
 
-    always_43 = config.plugins.AdvancedScreenshot.always_43.value
-    if always_43:
+    # Add 4:3 forcing
+    if config.plugins.AdvancedScreenshot.always_43.value:
         cmd.append("-l")
 
-    bi_cubic = config.plugins.AdvancedScreenshot.bi_cubic.value
-    if bi_cubic:
+    # Add bicubic resize
+    if config.plugins.AdvancedScreenshot.bi_cubic.value:
         cmd.append("-b")
 
+    # Add format parameter
     pic_format = config.plugins.AdvancedScreenshot.pictureformat.value
     if pic_format.startswith('-j'):
         cmd += pic_format.split()  # Example: "-j 90" → ["-j", "90"]
     elif pic_format == '-p':
         cmd.append("-p")
 
+    # Add output filename
     cmd.append(filename)
 
     return cmd
 
 
 class WebGrabResource(resource.Resource):
-    """Web interface handler for remote screenshot capture"""
+    """Web interface handler for remote screenshot capture."""
 
     def __init__(self, session):
+        """Initialize web resource.
+
+        Args:
+            session: Session object
+        """
         resource.Resource.__init__(self)
         self.session = session
 
     def render_GET(self, request):
-        """Handle GET requests for screenshot capture"""
+        """Handle GET requests for screenshot capture.
+
+        Args:
+            request: HTTP request object
+
+        Returns:
+            server.NOT_DONE_YET
+        """
         try:
             cleanup_tmp_files()
 
-            # 1: Parameter update and validation
-            params = {
-                'format': request.args.get(b'format', [b'-j 90'])[0].decode(),
-                'r': request.args.get(b'r', [b'720'])[0].decode(),
-                'v': request.args.get(b'v', [b'0'])[0].decode(),
-                's': request.args.get(b's', [b'1'])[0].decode()
-            }
+            # Parse parameters
+            format_param = request.args.get(b'format', [b'-j 90'])[0].decode()
+            resolution = request.args.get(b'r', [b'720'])[0].decode()
+            # video_param = request.args.get(b'v', [b'0'])[0].decode()
+            save_param = request.args.get(b's', [b'1'])[0].decode()
 
-            # 2: New format validation
+            # Validate format
             valid_formats = ('-j 100', '-j 90', '-j 80', '-j 60', 'bmp', '-p')
-            if params['format'] not in valid_formats:
-                raise ValueError(
-                    "[AdvancedScreenshotConfig]Format not supported")
+            if format_param not in valid_formats:
+                raise ValueError("[AdvancedScreenshot] Format not supported")
 
-            if params['r'] != 'default' and not match(
-                    r"^\d+(x\d+)?$", params['r']):
-                raise ValueError(
-                    "[AdvancedScreenshotConfig]Invalid resolution")
+            # Validate resolution
+            if resolution != 'default' and not match(r"^\d+(x\d+)?$", resolution):
+                raise ValueError("[AdvancedScreenshot] Invalid resolution")
 
-            # 3: Filename generation updated
-            filename = _generate_filename(params['format'])
+            # Generate filename
+            filename = generate_filename()
 
-            cmd = _build_grab_command(params, filename)
-
+            # Build and execute command
+            cmd = build_grab_command(filename)
             result = subprocess.run(
                 cmd,
                 stdout=subprocess.PIPE,
@@ -376,123 +411,118 @@ class WebGrabResource(resource.Resource):
 
             if not exists(filename):
                 if result.returncode == 0:
-                    # 4: Content-Type dinamico
-                    ext = _get_extension(params['format'])
+                    # Set dynamic Content-Type
+                    ext = get_extension(format_param)
                     with open(filename, 'rb') as f:
-                        request.setHeader(
-                            b'Content-Type', f'image/{ext}'.encode())
+                        request.setHeader(b'Content-Type', 'image/' + ext)
                         request.write(f.read())
-                    if int(params['s']) == 1 and exists(filename):
+                    # Clean up if requested
+                    if int(save_param) == 1 and exists(filename):
                         remove(filename)
                 else:
                     request.setResponseCode(500)
-                    request.write(f"Error: {result.stderr.decode()}".encode())
+                    request.write("Error: " + result.stderr.decode())
+            else:
+                request.setResponseCode(500)
+                request.write("Error: File not created")
 
         except Exception as e:
             request.setResponseCode(500)
-            request.write(
-                f"[AdvancedScreenshotConfig]Error: {
-                    str(e)}".encode())
+            request.write("[AdvancedScreenshot] Error: " + str(e))
 
         return server.NOT_DONE_YET
 
 
 class ScreenshotCore:
+    """Core screenshot functionality with hotkey support."""
+
     def __init__(self, session):
+        """Initialize screenshot core.
+
+        Args:
+            session: Session object
+        """
         self.session = session
         self.previous_flag = 0
         self.myConsole = MyConsole()
         self._bind_hotkey()
 
     def _bind_hotkey(self):
+        """Bind hotkey for screenshot capture."""
         eActionMap.getInstance().bindAction('', -0x7FFFFFFF, self._key_handler)
 
     def _key_handler(self, key, flag):
+        """Handle key press events.
+
+        Args:
+            key: Key code
+            flag: Key press flag
+
+        Returns:
+            0 to pass event, 1 to consume event
+        """
         try:
             current_value = str(key)
             target_value = config.plugins.AdvancedScreenshot.buttonchoice.value
 
-            # If the button is NOT the one configured for screenshot, let it
-            # pass!
+            # If button is NOT configured for screenshot, let it pass
             if current_value != target_value:
                 return 0
 
-            # If it is the screenshot button and it is enabled:
+            # If it is the screenshot button and plugin is enabled
             if config.plugins.AdvancedScreenshot.enabled.value:
                 if config.plugins.AdvancedScreenshot.switchhelp.value:
+                    # Short press mode
                     if flag == 1:
                         self.capture()
                         return 1
                 else:
+                    # Long press mode
                     if flag == 3:
                         self.capture()
                         return 1
 
             return 0
         except Exception as e:
-            print("[AdvancedScreenshotConfig]Key handler error: " + str(e))
+            print("[AdvancedScreenshot] Key handler error: " + str(e))
             return 0
 
-    """
-    # def _key_handler(self, key, flag):
-        # try:
-            # current_value = str(key)
-            # target_value = config.plugins.AdvancedScreenshot.buttonchoice.value
-
-            # print("[AdvancedScreenshotConfig]Key event: " + str(current_value) + " vs " + str(target_value) + ", Flag: " + str(flag))
-
-            # if (current_value == target_value and
-                    # config.plugins.AdvancedScreenshot.enabled.value):
-
-                # if config.plugins.AdvancedScreenshot.switchhelp.value:
-                    # # Short press mode
-                    # if flag == 1:
-                        # print("[AdvancedScreenshotConfig]Short press detected")
-                        # self.capture()
-                        # return 1
-                # else:
-                    # # Long press mode
-                    # if flag == 3:
-                        # print("[AdvancedScreenshotConfig]Long press detected")
-                        # self.capture()
-                        # return 1
-
-                # if flag == 0:  # KEY_UP
-                    # print("[AdvancedScreenshotConfig]Key released")
-
-            # return 0
-        # except Exception as e:
-            # print(f"[AdvancedScreenshotConfig][AdvancedScreenshotConfig]Key handler error: {str(e)}")
-            # return 0
-    """
-
     def capture(self):
+        """Capture screenshot."""
         if not self._is_grab_available():
-            raise Exception("Web capture failed Grab not available")
+            self._show_error(_("Web capture failed: Grab not available"))
+            return
+
         try:
-            filename = _generate_filename()
+            filename = generate_filename()
             if not filename:
                 return
-            cmd = _build_grab_command(filename)
+            cmd = build_grab_command(filename)
             self.last_capture_filename = filename
-            print("[Capture] Running command:", " ".join(cmd))
+            print("[Capture] Running command: " + " ".join(cmd))
             self.myConsole.ePopen(cmd, self._capture_callback, [filename])
         except Exception as e:
-            print(f"[AdvancedScreenshotConfig][ERROR] Capture error: {str(e)}")
+            print("[AdvancedScreenshot][ERROR] Capture error: " + str(e))
             self._show_error(_("Error during capture:\n") + str(e))
 
     def _capture_callback(self, data, retval, extra_args):
-        print(
-            f"[AdvancedScreenshotConfig][_capture_callback]extra_args: {
-                str(extra_args)}")
-        filename = extra_args  # [0]
+        """Callback for capture completion.
+
+        Args:
+            data: Command output data
+            retval: Return value
+            extra_args: Extra arguments (filename)
+        """
+        print("[AdvancedScreenshot][_capture_callback] extra_args: " + str(extra_args))
+        filename = extra_args
         error_msg = ""
 
         if retval != 0:
             error_msg = "Grab command failed with code: " + str(retval)
 
         if not error_msg and filename:
-            for x in range(5):  # Retry per attesa file
+            # Wait for file creation with retries
+            for x in range(5):
                 if exists(filename):
                     break
                 time.sleep(0.5)
@@ -500,37 +530,58 @@ class ScreenshotCore:
                 error_msg = "File not created\nCheck disk space"
 
         if error_msg:
-            print(f"[AdvancedScreenshotConfig][ERROR]: {str(error_msg)}")
+            print("[AdvancedScreenshot][ERROR]: " + str(error_msg))
             self._show_error(_(error_msg))
             return
 
-        print(
-            f"[AdvancedScreenshotConfig][INFO] Screenshot saved: {
-                str(filename)}")
+        print("[AdvancedScreenshot][INFO] Screenshot saved: " + str(filename))
         if config.plugins.AdvancedScreenshot.freezeframe.value:
-            self.session.openWithCallback(
-                self._freeze_callback, FreezeFrame, filename)
+            self.session.openWithCallback(self._freeze_callback, FreezeFrame, filename)
         else:
             self._show_message(_("Screenshot saved successfully!"))
 
     def _freeze_callback(self, retval):
+        """Callback for freeze frame preview.
+
+        Args:
+            retval: Return value from freeze frame
+        """
         if retval:
             self._show_message(_("Screenshot saved successfully!"))
 
     def _is_grab_available(self):
+        """Check if grab utility is available.
+
+        Returns:
+            True if /usr/bin/grab exists
+        """
         return exists("/usr/bin/grab")
 
     def _show_message(self, message):
-        """Show success notification"""
+        """Show success notification.
+
+        Args:
+            message: Message to display
+        """
+        timeout_str = config.plugins.AdvancedScreenshot.timeout.value
+        if timeout_str == "off" or timeout_str == "0":
+            timeout = None
+        else:
+            timeout = int(timeout_str)
+
         self.session.open(
             MessageBox,
             message,
             MessageBox.TYPE_INFO,
-            timeout=int(config.plugins.AdvancedScreenshot.timeout.value)
+            timeout=timeout
         )
 
     def _show_error(self, message):
-        """Show error notification"""
+        """Show error notification.
+
+        Args:
+            message: Error message to display
+        """
         self.session.open(
             MessageBox,
             message,
@@ -540,35 +591,46 @@ class ScreenshotCore:
 
 
 class FreezeFrame(Screen):
-    skin = f"""
-    <screen name="FreezeFrame" position="0,0" size="{SIZE_W},{SIZE_H}" flags="wfNoBorder">
-        <widget name="preview" position="0,0" size="{SIZE_W},{SIZE_H}" zPosition="4" />
+    """Screen for freeze frame preview of captured screenshot."""
+
+    skin = """
+    <screen name="FreezeFrame" position="0,0" size="""" + str(SIZE_W) + ", " + str(SIZE_H) + """" flags="wfNoBorder">
+        <widget name="preview" position="0,0" size="""" + str(SIZE_W) + ", " + str(SIZE_H) + """" zPosition="4" />
         <widget name="info" position="center,50" size="600,40" font="Regular;28" zPosition="5" halign="center"/>
     </screen>"""
 
     def __init__(self, session, filename):
+        """Initialize freeze frame screen.
+
+        Args:
+            session: Session object
+            filename: Path to screenshot file
+        """
         Screen.__init__(self, session)
         self.filename = filename
         self.picload = ePicLoad()
-        # print(f"[FreezeFrame] ePicLoad.__dict__: {str(ePicLoad.__dict__)}")
-        self.Scale = getScale()
+        self.scale = get_scale()
         self["preview"] = Pixmap()
         self["info"] = Label(_("Press OK to save - EXIT to cancel"))
         self["actions"] = ActionMap(["OkCancelActions"], {
             "ok": self.save,
             "cancel": self.discard
         })
-        self.picload.PictureData.get().append(self.DecodePicture)
-        print(f"[FreezeFrame] File {self.filename}")
-        self.onLayoutFinish.append(self.ShowPicture)
+        try:
+            self.picload.PictureData.get().append(self.decode_picture)
+        except:
+            self.picload_conn = self.picload.PictureData.connect(self.decode_picture)
+        print("[FreezeFrame] File " + self.filename)
+        self.onLayoutFinish.append(self.show_picture)
 
-    def ShowPicture(self):
+    def show_picture(self):
+        """Load and display picture."""
         if exists(self.filename):
-            print(f"[FreezeFrame] ShowPicture: {str(self.filename)}")
-        scalex = self.Scale[0] if isinstance(
-            self.Scale[0], (int, float)) else 1
-        scaley = self.Scale[1] if isinstance(
-            self.Scale[1], (int, float)) else 1
+            print("[FreezeFrame] show_picture: " + str(self.filename))
+
+        scalex = self.scale[0] if isinstance(self.scale[0], (int, float)) else 1
+        scaley = self.scale[1] if isinstance(self.scale[1], (int, float)) else 1
+
         self.picload.setPara([
             self["preview"].instance.size().width(),
             self["preview"].instance.size().height(),
@@ -578,116 +640,120 @@ class FreezeFrame(Screen):
             1,
             "#ff000000"
         ])
+
         if self.picload.startDecode(self.filename):
             self.picload = ePicLoad()
             try:
-                self.picload.PictureData.get().append(self.DecodePicture)
-            except BaseException:
-                self.picload_conn = self.picload.PictureData.connect(
-                    self.DecodePicture)
-        return
+                self.picload.PictureData.get().append(self.decode_picture)
+            except:
+                self.picload_conn = self.picload.PictureData.connect(self.decode_picture)
 
-    def DecodePicture(self, PicInfo=None):
-        print(f"[FreezeFrame] DecodePicture: {str(PicInfo)}")
+    def decode_picture(self, pic_info=None):
+        """Decode and display picture.
+
+        Args:
+            pic_info: Picture information
+        """
+        print("[FreezeFrame] decode_picture: " + str(pic_info))
         ptr = self.picload.getData()
         if ptr is not None:
             self["preview"].instance.setPixmap(ptr)
             self["preview"].instance.show()
 
     def save(self):
+        """Save screenshot."""
         self.close(True)
 
     def discard(self):
-        """
-        # try:
-            # if not config.plugins.AdvancedScreenshot.allways_save.value:
-                # remove(self.filename)
-        # except Exception as e:
-            # print(f"[AdvancedScreenshotConfig] Error deleting file: {str(e)}")
-        """
+        """Discard screenshot."""
         self.close(False)
 
 
 class ScreenshotGallery(Screen):
+    """Screen for browsing captured screenshots."""
+
     skin = """
-        <screen position="center,center" size="1280,720" title="Screenshot Gallery" flags="wfNoBorder">
-            <!-- <widget name="list" position="40,40" scrollbarMode="showNever" size="620,560" itemHeight="35" font="Regular;32" /> -->
-            <widget name="list" position="40,40" size="620,560" itemHeight="35" font="Regular;32" />
-            <eLabel position="345,670" size="300,40" font="Regular;36" backgroundColor="#b3ffd9" foregroundColor="#000000" borderWidth="1" zPosition="4" borderColor="#0000ff00" text="OK" halign="center" />
-            <eLabel position="643,670" size="300,40" font="Regular;36" backgroundColor="#00ffa000" foregroundColor="#000000" borderWidth="1" zPosition="4" borderColor="#00ffa000" text="Delete" halign="center" />
-            <widget name="preview" position="682,126" size="550,350" zPosition="9" alphatest="blend" scale="1" />
-            <widget name="info" position="44,606" zPosition="4" size="1189,55" font="Regular;28" foregroundColor="yellow" transparent="1" halign="center" valign="center" />
-            <eLabel backgroundColor="#00ff0000" position="45,710" size="300,6" zPosition="12" />
-            <eLabel backgroundColor="#0000ff00" position="345,710" size="300,6" zPosition="12" />
-            <eLabel backgroundColor="#00ffff00" position="643,710" size="300,6" zPosition="12" />
-            <eLabel backgroundColor="#000000ff" position="944,710" size="300,6" zPosition="12" />
-        </screen>"""
+    <screen position="center,center" size="1280,720" title="Screenshot Gallery" flags="wfNoBorder">
+        <widget name="list" position="40,40" size="620,560" itemHeight="35" font="Regular;32" />
+        <eLabel position="345,670" size="300,40" font="Regular;36" backgroundColor="#b3ffd9" foregroundColor="#000000" borderWidth="1" zPosition="4" borderColor="#0000ff00" text="OK" halign="center" />
+        <eLabel position="643,670" size="300,40" font="Regular;36" backgroundColor="#00ffa000" foregroundColor="#000000" borderWidth="1" zPosition="4" borderColor="#00ffa000" text="Delete" halign="center" />
+        <widget name="preview" position="682,126" size="550,350" zPosition="9" alphatest="blend" scale="1" />
+        <widget name="info" position="44,606" zPosition="4" size="1189,55" font="Regular;28" foregroundColor="yellow" transparent="1" halign="center" valign="center" />
+        <eLabel backgroundColor="#00ff0000" position="45,710" size="300,6" zPosition="12" />
+        <eLabel backgroundColor="#0000ff00" position="345,710" size="300,6" zPosition="12" />
+        <eLabel backgroundColor="#00ffff00" position="643,710" size="300,6" zPosition="12" />
+        <eLabel backgroundColor="#000000ff" position="944,710" size="300,6" zPosition="12" />
+    </screen>"""
 
     def __init__(self, session):
-        Screen.__init__(self, session)
+        """Initialize screenshot gallery.
 
+        Args:
+            session: Session object
+        """
+        Screen.__init__(self, session)
         self.screenshots = []
         self['list'] = MenuList(self.screenshots)
         self['preview'] = Pixmap()
+
         base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
-        self.full_path = f"{base_path}/screenshots"
-        path = self.full_path
-        if not path.endswith("/"):
+        self.full_path = base_path + "/screenshots"
+
+        if not self.full_path.endswith("/"):
             self.full_path += "/"
-        if checkfolder(self.full_path):
-            print('folder exist')
-        self.Scale = getScale()
+
+        if check_folder(self.full_path):
+            print('[ScreenshotGallery] Folder exists')
+
+        self.scale = get_scale()
         self.picload = ePicLoad()
         try:
-            self.picload.PictureData.get().append(self.DecodePicture)
-        except BaseException:
-            self.picload_conn = self.picload.PictureData.connect(
-                self.DecodePicture)
+            self.picload.PictureData.get().append(self.decode_picture)
+        except:
+            self.picload_conn = self.picload.PictureData.connect(self.decode_picture)
+
         self['info'] = Label()
-        self["list"].onSelectionChanged.append(self.ShowPicture)
+        self["list"].onSelectionChanged.append(self.show_picture)
         self["actions"] = ActionMap(["OkCancelActions", "DirectionActions", "ColorActions"], {
             "red": self.close,
             "green": self.preview,
             "yellow": self.delete,
-            "up": self.keyUp,
-            "down": self.keyDown,
-            "left": self.keyLeft,
-            "right": self.keyRight,
+            "up": self.key_up,
+            "down": self.key_down,
+            "left": self.key_left,
+            "right": self.key_right,
             "ok": self.preview,
             "cancel": self.close,
         })
         self._load_screenshots()
-        self.onLayoutFinish.append(self.ShowPicture)
+        self.onLayoutFinish.append(self.show_picture)
 
     def _load_screenshots(self):
-        print(
-            f"[AdvancedScreenshotConfig] ScreenshotGallery path: {str(self.full_path)}")
+        """Load screenshot list from directory."""
+        print("[ScreenshotGallery] Path: " + str(self.full_path))
         try:
+            image_extensions = (".jpg", ".png", ".bmp", ".JPG", ".PNG", ".BMP")
             self.screenshots = sorted([
                 f for f in listdir(self.full_path)
-                if f.lower().endswith(tuple(["jpg", "png", "bmp"]))
+                if f.endswith(image_extensions)
             ], key=lambda x: getctime(join(self.full_path, x)), reverse=True)
-            print(
-                f"[AdvancedScreenshotConfig] ScreenshotGallery screenshots: {str(self.screenshots)}")
+            print("[ScreenshotGallery] Found " + str(len(self.screenshots)) + " screenshots")
             self["list"].setList(self.screenshots)
         except Exception as e:
-            self.session.open(
-                MessageBox,
-                _("Error loading gallery: ") +
-                str(e),
-                MessageBox.TYPE_ERROR)
+            self.session.open(MessageBox, _("Error loading gallery: ") + str(e), MessageBox.TYPE_ERROR)
 
-    def ShowPicture(self):
+    def show_picture(self):
+        """Show selected picture in preview."""
         fname = self['list'].getCurrent()
-        self.filename = self.full_path + str(fname)
-        print('filename ok=', self.filename)
-        if not hasattr(self, "filename") or not self.filename:
+        if not fname:
             return
-        print(f"[ScreenshotGallery] ShowPicture: {str(self.filename)}")
-        scalex = self.Scale[0] if isinstance(
-            self.Scale[0], (int, float)) else 1
-        scaley = self.Scale[1] if isinstance(
-            self.Scale[1], (int, float)) else 1
+
+        self.filename = self.full_path + str(fname)
+        print('[ScreenshotGallery] show_picture: ' + self.filename)
+
+        scalex = self.scale[0] if isinstance(self.scale[0], (int, float)) else 1
+        scaley = self.scale[1] if isinstance(self.scale[1], (int, float)) else 1
+
         self.picload.setPara([
             self["preview"].instance.size().width(),
             self["preview"].instance.size().height(),
@@ -700,60 +766,79 @@ class ScreenshotGallery(Screen):
 
         if self.picload.startDecode(self.filename):
             self.picload = ePicLoad()
-            self.picload.PictureData.get().append(self.DecodePicture)
-        return
+            try:
+                self.picload.PictureData.get().append(self.decode_picture)
+            except:
+                self.picload_conn = self.picload.PictureData.connect(self.decode_picture)
 
-    def DecodePicture(self, PicInfo=""):
+    def decode_picture(self, pic_info=""):
+        """Decode and display picture.
+
+        Args:
+            pic_info: Picture information
+        """
         if len(self.screenshots) > 0:
-            print(f"[ScreenshotGallery] DecodePicture: {str(PicInfo)}")
+            print("[ScreenshotGallery] decode_picture: " + str(pic_info))
             if self.filename is not None:
                 ptr = self.picload.getData()
             else:
                 fname = self['list'].getCurrent()
                 self.filename = self.full_path + str(fname)
                 ptr = self.picload.getData()
-            print(
-                f"[ScreenshotGallery] DecodePicture self.filename: {str(self.filename)}")
-            self["info"].setText(_(self.filename))
-            self["preview"].instance.setPixmap(ptr)
-            self["preview"].instance.show()
 
-    def keyUp(self):
+            print("[ScreenshotGallery] decode_picture filename: " + str(self.filename))
+            self["info"].setText(_(self.filename))
+            if ptr:
+                self["preview"].instance.setPixmap(ptr)
+                self["preview"].instance.show()
+
+    def key_up(self):
+        """Handle up key press."""
         print("[DEBUG] up pressed")
         try:
             self['list'].up()
-            self.ShowPicture()
+            self.show_picture()
         except Exception as e:
             print(e)
 
-    def keyDown(self):
+    def key_down(self):
+        """Handle down key press."""
         print("[DEBUG] down pressed")
         try:
             self['list'].down()
-            self.ShowPicture()
+            self.show_picture()
         except Exception as e:
             print(e)
 
-    def keyLeft(self):
+    def key_left(self):
+        """Handle left key press."""
         try:
             self['list'].pageUp()
-            self.ShowPicture()
+            self.show_picture()
         except Exception as e:
             print(e)
 
-    def keyRight(self):
+    def key_right(self):
+        """Handle right key press."""
         try:
             self['list'].pageDown()
-            self.ShowPicture()
+            self.show_picture()
         except Exception as e:
             print(e)
 
     def preview(self):
-        if selection := self["list"].getCurrent():
+        """Open full screen preview of selected screenshot."""
+        selection = self["list"].getCurrent()
+        if selection:
             path = join(self.full_path, selection)
             self.session.open(ScreenshotPreview, path)
 
     def delete(self, confirm=False):
+        """Delete selected screenshot.
+
+        Args:
+            confirm: Whether confirmation was already given
+        """
         if not confirm:
             self.session.openWithCallback(
                 self.delete, MessageBox,
@@ -761,35 +846,44 @@ class ScreenshotGallery(Screen):
                 MessageBox.TYPE_YESNO
             )
         else:
-            if selection := self["list"].getCurrent():
+            selection = self["list"].getCurrent()
+            if selection:
                 try:
                     remove(join(self.full_path, selection))
                     self._load_screenshots()
                 except Exception as e:
-                    self.session.open(
-                        MessageBox,
-                        _("Delete failed: ") + str(e),
-                        MessageBox.TYPE_ERROR)
+                    self.session.open(MessageBox, _("Delete failed: ") + str(e), MessageBox.TYPE_ERROR)
 
 
 class ScreenshotPreview(Screen):
-    skin = f"""
-    <screen position="0,0" size="{SIZE_W},{SIZE_H}" title="Screenshot Preview" flags="wfNoBorder">
-        <widget name="image" position="0,0" size="{SIZE_W},{SIZE_H}" />
+    """Full screen preview of screenshot."""
+
+    skin = """
+    <screen position="0,0" size="""" + str(SIZE_W) + ", " + str(SIZE_H) + """" title="Screenshot Preview" flags="wfNoBorder">
+        <widget name="image" position="0,0" size="""" + str(SIZE_W) + ", " + str(SIZE_H) + """" />
     </screen>"""
 
     def __init__(self, session, filepath):
+        """Initialize screenshot preview.
+
+        Args:
+            session: Session object
+            filepath: Path to screenshot file
+        """
         Screen.__init__(self, session)
         self.filepath = filepath
         self["image"] = Pixmap()
-        self["actions"] = ActionMap(
-            ["OkCancelActions"], {
-                "cancel": self.close})
+        self["actions"] = ActionMap(["OkCancelActions"], {"cancel": self.close})
         self._show_image()
 
     def _show_image(self):
+        """Load and display image."""
         self.picload = ePicLoad()
-        self.picload.PictureData.get().append(self._update_image)
+        try:
+            self.picload.PictureData.get().append(self._update_image)
+        except:
+            self.picload_conn = self.picload.PictureData.connect(self._update_image)
+
         self.picload.setPara((
             SIZE_W, SIZE_H,
             SIZE_W, SIZE_H,
@@ -797,12 +891,20 @@ class ScreenshotPreview(Screen):
         ))
         self.picload.startDecode(self.filepath)
 
-    def _update_image(self, picInfo=None):
-        if ptr := self.picload.getData():
+    def _update_image(self, pic_info=None):
+        """Update displayed image.
+
+        Args:
+            pic_info: Picture information
+        """
+        ptr = self.picload.getData()
+        if ptr:
             self["image"].instance.setPixmap(ptr)
 
 
 class AdvancedScreenshotConfig(ConfigListScreen, Screen):
+    """Configuration screen for Advanced Screenshot plugin."""
+
     skin = """
     <screen name="AdvancedScreenshotConfig" position="center,center" size="1280,720" title="Screenshot Settings" flags="wfNoBorder">
         <widget name="config" position="50,50" size="1180,600" scrollbarMode="showNever" itemHeight="35" font="Regular;32" />
@@ -817,78 +919,78 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
     </screen>"""
 
     def __init__(self, session):
+        """Initialize configuration screen.
+
+        Args:
+            session: Session object
+        """
         Screen.__init__(self, session)
         self.setup_title = _("Settings")
         self.list = []
-        self._onConfigEntryChanged = []
+        self._on_config_entry_changed = []
         self["config"] = ConfigList(self.list)
         self._create_config()
-        ConfigListScreen.__init__(
-            self,
-            self.list,
-            session=self.session,
-            on_change=self._onConfigEntryChanged)
+        ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self._on_config_entry_changed)
+
         self["actions"] = ActionMap(
             ["SetupActions", "ColorActions", "VirtualKeyboardActions"],
             {
                 "ok": self.save,
                 "cancel": self.cancel,
-                "blue": self.onGallery,
-                "yellow": self.onPicView,
+                "blue": self.on_gallery,
+                "yellow": self.on_pic_view,
                 "green": self.save,
                 "red": self.cancel,
-                "showVirtualKeyboard": self.KeyText,
+                "showVirtualKeyboard": self.key_text,
             }
         )
-        self.onLayoutFinish.append(self.__layoutFinished)
+        self.onLayoutFinish.append(self.__layout_finished)
 
-    def __layoutFinished(self):
+    def __layout_finished(self):
+        """Called when layout is finished."""
         self.setTitle(self.setup_title)
 
     def _create_config(self):
+        """Create configuration list."""
         self.list = []
 
-        # Basic configuration
+        # Header
         section = '--------------------------------------( Advanced Screenshot Setup )--------------------------------------'
         self.list.append((_(section), NoSave(ConfigNothing())))
-        self.list.append(
-            getConfigListEntry(
-                _("Enable plugin"),
-                config.plugins.AdvancedScreenshot.enabled))
+        self.list.append(getConfigListEntry(_("Enable plugin"), config.plugins.AdvancedScreenshot.enabled))
 
         if config.plugins.AdvancedScreenshot.enabled.value:
-
-            # 1: Update image format options
+            # Image format
             self.list.append(getConfigListEntry(
                 _("Image format"),
                 config.plugins.AdvancedScreenshot.pictureformat
             ))
 
-            # 2: New logic for resolution
+            # Resolution
             self.list.append(getConfigListEntry(
                 _("Resolution"),
                 config.plugins.AdvancedScreenshot.picturesize
             ))
 
-            # 3: Aspect ratio fix
+            # Aspect ratio fix
             self.list.append(getConfigListEntry(
                 _("Fix aspect ratio (adds -n to force no stretching)"),
                 config.plugins.AdvancedScreenshot.fixed_aspect_ratio
             ))
 
-            # 4: Force 4:3 output
-            self.list.append(
-                getConfigListEntry(
-                    _("Always output 4:3 image (adds letterbox if source is 16:9)"),
-                    config.plugins.AdvancedScreenshot.always_43))
+            # Force 4:3 output
+            self.list.append(getConfigListEntry(
+                _("Always output 4:3 image (adds letterbox if source is 16:9)"),
+                config.plugins.AdvancedScreenshot.always_43
+            ))
 
-            # 5: Bicubic resize
+            # Bicubic resize
             self.list.append(getConfigListEntry(
                 _("Use bicubic resize (slower, but smoother image)"),
                 config.plugins.AdvancedScreenshot.bi_cubic
             ))
 
-            # 6: Freeze frame preview
+            # Freeze frame preview
             self.list.append(getConfigListEntry(
                 _("Freeze frame preview"),
                 config.plugins.AdvancedScreenshot.freezeframe
@@ -900,13 +1002,13 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
                     config.plugins.AdvancedScreenshot.allways_save
                 ))
 
-            # 7: Save path
+            # Save path
             self.list.append(getConfigListEntry(
                 _("Save path (requires restart)"),
                 config.plugins.AdvancedScreenshot.path
             ))
 
-            # 8: Keymapping
+            # Key mapping
             self.list.append(getConfigListEntry(
                 _("Select screenshot button"),
                 config.plugins.AdvancedScreenshot.buttonchoice
@@ -916,24 +1018,18 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
             button_name = BUTTON_MAP.get(current_value, _("Unknown"))
 
             if current_value in ("398", "399", "400"):
-                self.list.append(
-                    getConfigListEntry(
-                        _("Long press required for") +
-                        button_name +
-                        _(" long ' can be used."),
-                        config.plugins.AdvancedScreenshot.dummy))
+                self.list.append(getConfigListEntry(
+                    _("Long press required for ") + button_name + _(" long ' can be used."),
+                    config.plugins.AdvancedScreenshot.dummy
+                ))
                 config.plugins.AdvancedScreenshot.switchhelp.setValue(0)
             else:
-                self.list.append(
-                    getConfigListEntry(
-                        _("Press type for ") +
-                        button_name +
-                        _(" ' button instead of ' ") +
-                        button_name +
-                        _(" long:"),
-                        config.plugins.AdvancedScreenshot.switchhelp))
+                self.list.append(getConfigListEntry(
+                    _("Press type for ") + button_name + _(" ' button instead of ' ") + button_name + _(" long:"),
+                    config.plugins.AdvancedScreenshot.switchhelp
+                ))
 
-            # 9: Timeout
+            # Timeout
             self.list.append(getConfigListEntry(
                 _("Message timeout (seconds)"),
                 config.plugins.AdvancedScreenshot.timeout
@@ -942,36 +1038,50 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
         self["config"].list = self.list
         self["config"].l.setList(self.list)
 
-    def _onConfigEntryChanged(self, configElement=None):
+    def _on_config_entry_changed(self, config_element=None):
+        """Handle configuration entry changes.
+
+        Args:
+            config_element: Changed configuration element
+        """
         for x in self.onChangedEntry:
             x()
         self._create_config()
 
     def save(self):
+        """Save configuration."""
         base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
-        full_path = f"{base_path}/screenshots/"
-        if checkfolder(full_path):
-            print(f"{full_path}")
+        full_path = base_path + "/screenshots/"
+        if check_folder(full_path):
+            print(full_path)
+
         for x in self["config"].list:
             if isinstance(x, tuple) and len(x) > 1 and hasattr(x[1], "save"):
                 x[1].save()
         self.close(True)
 
     def cancel(self):
+        """Cancel configuration changes."""
         self.close(False)
 
-    def KeyText(self):
+    def key_text(self):
+        """Open virtual keyboard for text input."""
         sel = self["config"].getCurrent()
         if sel:
             text_value = str(sel[1].value)
             self.session.openWithCallback(
-                self.VirtualKeyBoardCallback,
+                self.virtual_keyboard_callback,
                 VirtualKeyBoard,
                 title=sel[0],
                 text=text_value
             )
 
-    def VirtualKeyBoardCallback(self, callback=None):
+    def virtual_keyboard_callback(self, callback=None):
+        """Handle virtual keyboard callback.
+
+        Args:
+            callback: Text from virtual keyboard
+        """
         if callback is not None:
             current = self["config"].getCurrent()
             cfg = current[1]
@@ -984,106 +1094,157 @@ class AdvancedScreenshotConfig(ConfigListScreen, Screen):
                 pass
             self["config"].invalidate(current)
 
-    def getCurrentEntry(self):
-        return self["config"].getCurrent()[0]
+    def get_current_entry(self):
+        """Get current configuration entry name.
 
-    def showhide(self):
-        pass
+        Returns:
+            Current entry name
+        """
+        current = self["config"].getCurrent()
+        if current:
+            return current[0]
+        return ""
 
-    def getCurrentValue(self):
+    def get_current_value(self):
+        """Get current configuration value.
+
+        Returns:
+            Current value as string
+        """
         current = self["config"].getCurrent()
         if current and hasattr(current[1], "getText"):
             return str(current[1].getText())
-        return str(current[1])  # fallback
+        return str(current[1]) if current else ""
 
-    def createSummary(self):
+    def create_summary(self):
+        """Create summary for setup screen.
+
+        Returns:
+            SetupSummary instance
+        """
         from Screens.Setup import SetupSummary
         return SetupSummary
 
-    def keyLeft(self):
+    def key_left(self):
+        """Handle left key press."""
         ConfigListScreen.keyLeft(self)
         self._create_config()
 
-    def keyRight(self):
+    def key_right(self):
+        """Handle right key press."""
         ConfigListScreen.keyRight(self)
         self._create_config()
 
-    def keyDown(self):
+    def key_down(self):
+        """Handle down key press."""
         self['config'].instance.moveSelection(self['config'].instance.moveDown)
         self._create_config()
 
-    def keyUp(self):
+    def key_up(self):
+        """Handle up key press."""
         self['config'].instance.moveSelection(self['config'].instance.moveUp)
         self._create_config()
 
-    def onPicView(self):
+    def on_pic_view(self):
+        """Open picture view gallery."""
         fullpath = []
         base_path = config.plugins.AdvancedScreenshot.path.value.rstrip('/')
-        full_path = f"{base_path}/screenshots/"
-        print(
-            f"[AdvancedScreenshotConfig]onPicView full_path: {
-                str(full_path)}")
-        if checkfolder(full_path):
-            for x in listdir(full_path):
-                if isfile(full_path + x):
-                    print(
-                        f"[AdvancedScreenshotConfig]onPicView file x: {
-                            str(x)}")
-                    if x.endswith('.jpg') or x.endswith(
-                            '.png') or x.endswith('.bmp') or x.endswith('.gif'):
-                        fullpath.append(x)
+        full_path = base_path + "/screenshots/"
+        print("[AdvancedScreenshotConfig] on_pic_view full_path: " + str(full_path))
+
+        if check_folder(full_path):
+            for filename in listdir(full_path):
+                if isfile(full_path + filename):
+                    print("[AdvancedScreenshotConfig] on_pic_view file: " + str(filename))
+                    if filename.lower().endswith(('.jpg', '.png', '.bmp', '.gif')):
+                        fullpath.append(filename)
             self.fullpath = fullpath
             try:
                 from .picplayer import Galery_Thumb
                 self.session.open(Galery_Thumb, self.fullpath, 0, full_path)
-            except TypeError as e:
-                print(f"[AdvancedScreenshotConfig]onPicView error: {str(e)}")
+            except (TypeError, ImportError) as e:
+                print("[AdvancedScreenshotConfig] on_pic_view error: " + str(e))
 
-    def onGallery(self):
+    def on_gallery(self):
+        """Open screenshot gallery."""
         try:
             self.session.open(ScreenshotGallery)
-        except TypeError as e:
-            print(f"[AdvancedScreenshotConfig]onGallery error: {str(e)}")
+        except Exception as e:
+            print("[AdvancedScreenshotConfig] on_gallery error: " + str(e))
 
 
 def get_button_name(value):
-    return dict(BUTTON_MAP).get(value, _("Unknown"))
+    """Get button name from value.
+
+    Args:
+        value: Button value
+
+    Returns:
+        Button name or "Unknown"
+    """
+    return BUTTON_MAP.get(value, _("Unknown"))
 
 
 def get_available_buttons():
-    return [code for code, name in BUTTON_MAP]
+    """Get list of available button codes.
+
+    Returns:
+        List of button codes
+    """
+    return list(BUTTON_MAP.keys())
 
 
-def sessionstart(reason, session=None, **kwargs):
-    """Initialize plugin components"""
-    print(
-        f"[AdvancedScreenshotConfig]sessionstart Initialize plugin components: {
-            str(reason)} session {
-            str(session)} ")
+def session_start(reason, session=None, **kwargs):
+    """Initialize plugin components on session start.
+
+    Args:
+        reason: Reason code
+        session: Session object
+        **kwargs: Additional arguments
+
+    Returns:
+        ScreenshotCore instance or None
+    """
+    print("[AdvancedScreenshot] session_start: " + str(reason) + " session " + str(session))
+
     if reason == 0 and session:
         # Register web interface
         root = kwargs.get('root', None)
         if root:
             root.putChild(b'grab', WebGrabResource(session))
-        print(
-            f"[AdvancedScreenshotConfig]sessionstart Initialize root: {
-                str(root)} ")
+        print("[AdvancedScreenshot] session_start root: " + str(root))
         return ScreenshotCore(session)
+
+    return None
 
 
 def setup(session, **kwargs):
+    """Open setup screen.
+
+    Args:
+        session: Session object
+        **kwargs: Additional arguments
+    """
     session.open(AdvancedScreenshotConfig)
 
 
-def Plugins(**kwargs):
+def plugins(**kwargs):
+    """Get plugin descriptors.
+
+    Args:
+        **kwargs: Additional arguments
+
+    Returns:
+        List of PluginDescriptor objects
+    """
     return [
         PluginDescriptor(
             where=PluginDescriptor.WHERE_SESSIONSTART,
-            fnc=sessionstart
+            fnc=session_start
         ),
         PluginDescriptor(
             name=_("Advanced Screenshot"),
-            description=_("Professional screenshot tool") + ' ' + currversion,
+            description=_("Professional screenshot tool") + " " + CURRENT_VERSION,
             where=PluginDescriptor.WHERE_PLUGINMENU,
             icon="plugin.png",
             fnc=setup
@@ -1095,27 +1256,3 @@ def Plugins(**kwargs):
             fnc=lambda session: session.open(ScreenshotGallery)
         )
     ]
-
-
-"""
-"Usage: grab [commands] [filename]\n\n"
-"command:\n"
-"-o only grab osd (framebuffer) when using this with png or bmp\n"
-"   fileformat you will get a 32bit pic with alphachannel\n"
-"-v only grab video OSD (on-screen display)\n"
-"-i (video device) to grab video (default 0)\n"
-"-d always use osd resolution (good for skinshots)\n"
-"-n dont correct 16:9 aspect ratio\n"
-"-r (size) resize to a fixed width, maximum: 1920\n"
-"-l always 4:3, create letterbox if 16:9\n"
-"-b use bicubic picture resize (slow but smooth)\n"
-"-j (quality) produce jpg files instead of bmp (quality 0-100)\n"
-"-p produce png files instead of bmp\n"
-"-q Quiet mode, don't output debug messages\n"
-"-s write to stdout instead of a file (silent)\n"
-"-h this help screen\n\n"
-# -t=NUMBER — timeout in seconds for grab
-# -a=1 — capture with audio enabled (video stream only)
-"If no command is given the complete picture will be grabbed.\n"
-"If no filename is given /tmp/screenshot.[bmp/jpg/png] will be used.\n");
-"""
