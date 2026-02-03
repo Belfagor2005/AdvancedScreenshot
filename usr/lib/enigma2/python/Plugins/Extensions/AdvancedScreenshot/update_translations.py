@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-AdvancedScreenshot Translation Updater for Enigma2
+vavoo for Enigma2
 Created by: Lululla
 ###########################################################
-Last Updated: 2026-01-31
+Last Updated: 2025-12-26
 Credits: Lululla (modifications)
 Homepage: www.corvoboys.org
           www.linuxsat-support.com
@@ -16,10 +16,12 @@ import re
 import subprocess
 from xml.etree import ElementTree as ET
 
-PLUGIN_NAME = "AdvancedScreenshot"
+PLUGIN_NAME = "vavoo"
 PLUGIN_DIR = os.path.dirname(os.path.abspath(__file__))
 LOCALE_DIR = os.path.join(PLUGIN_DIR, "locale")
 POT_FILE = os.path.join(LOCALE_DIR, "{}.pot".format(PLUGIN_NAME))
+
+
 STANDARD_LANGUAGES = [
     'af',         # Afrikaans
     'am',         # Amharic
