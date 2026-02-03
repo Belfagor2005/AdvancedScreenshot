@@ -48,7 +48,6 @@ self.textcolor = (('#ff000000', _('trasparent')),('#00000000', _('black')))
 class Galery_Thumb(Screen):
 
     def __init__(self, session, piclist, lastindex, path):
-
         """ make skin """
         self.textcolor = "#ffffff"
         self.color = "#009eb9ff"
@@ -81,13 +80,23 @@ class Galery_Thumb(Screen):
             thumb_pos_y = absY + 5
             thumb_h = self.picY - textsize * 2
 
-            skincontent += (
-                '<widget source="label' + str(x) + '" render="Label" '
-                'position="' + str(absX) + ',' + str(label_pos) + '" '
-                'size="' + str(self.picX) + ',' + str(textsize) + '" '
-                'halign="center" font="Regular;24" zPosition="2" '
-                'transparent="1" noWrap="1" foregroundColor="' + self.textcolor + '" />\n'
-            )
+            skincontent += ('<widget source="label' +
+                            str(x) +
+                            '" render="Label" '
+                            'position="' +
+                            str(absX) +
+                            ',' +
+                            str(label_pos) +
+                            '" '
+                            'size="' +
+                            str(self.picX) +
+                            ',' +
+                            str(textsize) +
+                            '" '
+                            'halign="center" font="Regular;24" zPosition="2" '
+                            'transparent="1" noWrap="1" foregroundColor="' +
+                            self.textcolor +
+                            '" />\n')
 
             skincontent += (
                 '<widget name="thumb' + str(x) + '" '
@@ -96,9 +105,12 @@ class Galery_Thumb(Screen):
                 'zPosition="2" transparent="1" alphatest="on" />\n'
             )
 
-        skinthumb = '<screen name="Galery_Thumb" position="center,center" size="' + str(size_w) + ',' + str(size_h) + '" flags="wfNoBorder">\n'
-        skinthumb += '<eLabel position="0,0" zPosition="1" size="' + str(size_w) + ',' + str(size_h) + '" backgroundColor="' + self.color + '" halign="center" />\n'
-        skinthumb += '<widget name="frame" position="35,30" size="' + str(self.picX + 5) + ',' + str(self.picY + 10) + '" scale="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/AdvancedScreenshot/images/pic_frame.png" alphatest="on" zPosition="3"/>\n'
+        skinthumb = '<screen name="Galery_Thumb" position="center,center" size="' + \
+            str(size_w) + ',' + str(size_h) + '" flags="wfNoBorder">\n'
+        skinthumb += '<eLabel position="0,0" zPosition="1" size="' + \
+            str(size_w) + ',' + str(size_h) + '" backgroundColor="' + self.color + '" halign="center" />\n'
+        skinthumb += '<widget name="frame" position="35,30" size="' + str(self.picX + 5) + ',' + str(
+            self.picY + 10) + '" scale="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/AdvancedScreenshot/images/pic_frame.png" alphatest="on" zPosition="3"/>\n'
         skinthumb += skincontent
         skinthumb += '</screen>\n'
 
@@ -153,7 +165,7 @@ class Galery_Thumb(Screen):
             self.picload.PictureData.get().append(self.showPic)
         self.ThumbTimer = eTimer()
         self.ThumbTimer.callback.append(self.showPic)
-        self.onLayoutFinish.append(self.setPicloadConf)        
+        self.onLayoutFinish.append(self.setPicloadConf)
 
     def setPicloadConf(self):
         sc = getScale()
@@ -190,7 +202,8 @@ class Galery_Thumb(Screen):
 
         for x in self.filelist:
             if x[T_PAGE] is self.currPage:
-                self['label' + str(x[T_FRAME_POS])].setText('(' + str(x[T_INDEX] + 1) + ') ' + x[T_NAME])
+                self['label' + str(x[T_FRAME_POS])].setText('(' + \
+                                   str(x[T_INDEX] + 1) + ') ' + x[T_NAME])
                 self.Thumbnaillist.append([0, x[T_FRAME_POS], x[T_FULL]])
         self.showPic()
 
@@ -215,13 +228,18 @@ class Galery_Thumb(Screen):
                 ptr = self.picload.getData()
                 if ptr is None:
                     print("Error: self.PicLoad.getData() returned None")
-                    print(f"[Galery_Thumb] showPic: returned None: {str(img_path)}")
+                    print(
+                        f"[Galery_Thumb] showPic: returned None: {
+                            str(img_path)}")
                     return
                 try:
-                    self['thumb' + str(self.Thumbnaillist[x][1])].instance.setPixmap(ptr)
+                    self['thumb' + str(self.Thumbnaillist[x][1])
+                         ].instance.setPixmap(ptr)
                     self['thumb' + str(self.Thumbnaillist[x][1])].show()
                 except Exception as e:
-                    print(f"[Galery_Thumb] showPic Error while setPixmap: {str(e)}")
+                    print(
+                        f"[Galery_Thumb] showPic Error while setPixmap: {
+                            str(e)}")
         return
 
     def key_left(self):
@@ -252,7 +270,12 @@ class Galery_Thumb(Screen):
         if self.maxentry < 0:
             return
         self.old_index = self.index
-        self.session.openWithCallback(self.callbackView, Pic_Full_View, self.filelist, self.index, self.path)
+        self.session.openWithCallback(
+            self.callbackView,
+            Pic_Full_View,
+            self.filelist,
+            self.index,
+            self.path)
 
     def callbackView(self, val=0):
         self.index = val
@@ -275,7 +298,9 @@ class Galery_Thumb(Screen):
                     if isfile(file_path):
                         remove(file_path)
                 except Exception as e:
-                    print(f"[Galery_Thumb] Error while removing file: {str(e)}")
+                    print(
+                        f"[Galery_Thumb] Error while removing file: {
+                            str(e)}")
         else:
             print('The folder does not exist')
 
@@ -295,13 +320,20 @@ class Pic_Full_View(Screen):
         pic_width = size_w - space * 2
         pic_height = size_h - space * 2
 
-        skinpaint = '<screen position="0,0" size="' + str(size_w) + ',' + str(size_h) + '" flags="wfNoBorder">\n'
-        skinpaint += '<eLabel position="0,0" size="' + str(size_w) + ',' + str(size_h) + '" zPosition="0" backgroundColor="' + self.color + '" />\n'
-        skinpaint += '<widget name="pic" position="' + str(space) + ',' + str(space) + '" size="' + str(pic_width) + ',' + str(pic_height) + '" zPosition="1" alphatest="on" />\n'
-        skinpaint += '<widget name="point" position="' + str(space + 20) + ',' + str(space + 2) + '" size="30,30" zPosition="2" pixmap="skin_default/icons/record.png" alphatest="on" />\n'
-        skinpaint += '<widget name="play_icon" position="' + str(space + 50) + ',' + str(space + 2) + '" size="30,30" zPosition="2" pixmap="skin_default/icons/ico_mp_play.png" alphatest="on" />\n'
-        skinpaint += '<widget name="play_icon_show" position="' + str(space + 50) + ',' + str(space + 2) + '" size="30,30" zPosition="2" pixmap="skin_default/icons/ico_mp_play.png" alphatest="on" />\n'
-        skinpaint += '<widget source="file" render="Label" position="' + str(space + 80) + ',' + str(space) + '" size="' + str(size_w - space * 2 - 50) + ',25" font="Regular;28" halign="left" foregroundColor="' + self.textcolor + '" zPosition="2" noWrap="1" transparent="1" />\n'
+        skinpaint = '<screen position="0,0" size="' + \
+            str(size_w) + ',' + str(size_h) + '" flags="wfNoBorder">\n'
+        skinpaint += '<eLabel position="0,0" size="' + str(size_w) + ',' + str(
+            size_h) + '" zPosition="0" backgroundColor="' + self.color + '" />\n'
+        skinpaint += '<widget name="pic" position="' + str(space) + ',' + str(space) + '" size="' + str(
+            pic_width) + ',' + str(pic_height) + '" zPosition="1" alphatest="on" />\n'
+        skinpaint += '<widget name="point" position="' + str(space + 20) + ',' + str(
+            space + 2) + '" size="30,30" zPosition="2" pixmap="skin_default/icons/record.png" alphatest="on" />\n'
+        skinpaint += '<widget name="play_icon" position="' + str(space + 50) + ',' + str(
+            space + 2) + '" size="30,30" zPosition="2" pixmap="skin_default/icons/ico_mp_play.png" alphatest="on" />\n'
+        skinpaint += '<widget name="play_icon_show" position="' + str(space + 50) + ',' + str(
+            space + 2) + '" size="30,30" zPosition="2" pixmap="skin_default/icons/ico_mp_play.png" alphatest="on" />\n'
+        skinpaint += '<widget source="file" render="Label" position="' + str(space + 80) + ',' + str(space) + '" size="' + str(
+            size_w - space * 2 - 50) + ',25" font="Regular;28" halign="left" foregroundColor="' + self.textcolor + '" zPosition="2" noWrap="1" transparent="1" />\n'
         skinpaint += '</screen>\n'
         self.skin = skinpaint
 
@@ -395,8 +427,9 @@ class Pic_Full_View(Screen):
         text = ''
         try:
             text = picInfo.split('\n', 1)
-            text = '(' + str(self.index + 1) + '/' + str(self.maxentry + 1) + ') ' + text[0].split('/')[-1]
-        except:
+            text = '(' + str(self.index + 1) + '/' + \
+                str(self.maxentry + 1) + ') ' + text[0].split('/')[-1]
+        except BaseException:
             pass
 
         self.currPic = []
@@ -425,7 +458,8 @@ class Pic_Full_View(Screen):
             self.index = self.maxentry
 
     def slidePic(self):
-        print(f"[Galery_Thumb]slidePic slide to next Picture index: {str(self.lastindex)}")
+        print(
+            f"[Galery_Thumb]slidePic slide to next Picture index: {str(self.lastindex)}")
         self.PlayPause()
         self.shownow = True
         self.ShowPicture()
