@@ -3,26 +3,24 @@
 
 version='1.2'
 changelog='Set Config - locale add'
+
 TMPPATH=/tmp/AdvancedScreenshot-install
 FILEPATH=/tmp/AdvancedScreenshot-main.tar.gz
 
 echo "Starting AdvancedScreenshot installation..."
 
-# Determine plugin path based on architecture
 if [ ! -d /usr/lib64 ]; then
     PLUGINPATH=/usr/lib/enigma2/python/Plugins/Extensions/AdvancedScreenshot
 else
     PLUGINPATH=/usr/lib64/enigma2/python/Plugins/Extensions/AdvancedScreenshot
 fi
 
-# Cleanup function
 cleanup() {
     echo "Cleaning up temporary files..."
     [ -d "$TMPPATH" ] && rm -rf "$TMPPATH"
     [ -f "$FILEPATH" ] && rm -f "$FILEPATH"
 }
 
-# Detect OS type
 detect_os() {
     if [ -f /var/lib/dpkg/status ]; then
         OSTYPE="DreamOs"
@@ -39,11 +37,9 @@ detect_os() {
 
 detect_os
 
-# Cleanup before starting
 cleanup
 mkdir -p "$TMPPATH"
 
-# Install wget if missing
 if ! command -v wget >/dev/null 2>&1; then
     echo "Installing wget..."
     case "$OSTYPE" in
@@ -60,7 +56,6 @@ if ! command -v wget >/dev/null 2>&1; then
     esac
 fi
 
-# Detect Python version
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     echo "Python3 image detected"
     PYTHON="PY3"
@@ -71,7 +66,6 @@ else
     Packagerequests="python-requests"
 fi
 
-# Install required packages
 install_pkg() {
     local pkg=$1
     if [ -z "$STATUS" ] || ! grep -qs "Package: $pkg" "$STATUS" 2>/dev/null; then
@@ -92,17 +86,14 @@ install_pkg() {
     fi
 }
 
-# Install Python requests
 install_pkg "$Packagerequests"
 
-# Extra multimedia packages (only for OE systems)
 if [ "$OSTYPE" = "OE" ]; then
     echo "Installing additional multimedia packages..."
     for pkg in ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp; do
         install_pkg "$pkg"
     done
     
-    # Install youtube-dl based on Python version
     if [ "$PYTHON" = "PY3" ]; then
         install_pkg "python3-youtube-dl" || install_pkg "yt-dlp"
     else
@@ -110,7 +101,6 @@ if [ "$OSTYPE" = "OE" ]; then
     fi
 fi
 
-# Download and extract
 echo "Downloading AdvancedScreenshot..."
 wget --no-check-certificate 'https://github.com/Belfagor2005/AdvancedScreenshot/archive/refs/heads/main.tar.gz' -O "$FILEPATH"
 if [ $? -ne 0 ]; then
@@ -127,11 +117,9 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Install plugin files
 echo "Installing plugin files..."
 mkdir -p "$PLUGINPATH"
 
-# Find correct directory in extracted structure
 if [ -d "$TMPPATH/AdvancedScreenshot-main/usr/lib/enigma2/python/Plugins/Extensions/AdvancedScreenshot" ]; then
     cp -r "$TMPPATH/AdvancedScreenshot-main/usr/lib/enigma2/python/Plugins/Extensions/AdvancedScreenshot"/* "$PLUGINPATH/" 2>/dev/null
     echo "Copied from standard plugin directory"
@@ -139,7 +127,6 @@ elif [ -d "$TMPPATH/AdvancedScreenshot-main/usr/lib64/enigma2/python/Plugins/Ext
     cp -r "$TMPPATH/AdvancedScreenshot-main/usr/lib64/enigma2/python/Plugins/Extensions/AdvancedScreenshot"/* "$PLUGINPATH/" 2>/dev/null
     echo "Copied from lib64 plugin directory"
 elif [ -d "$TMPPATH/AdvancedScreenshot-main/usr" ]; then
-    # Copy entire usr tree
     cp -r "$TMPPATH/AdvancedScreenshot-main/usr"/* /usr/ 2>/dev/null
     echo "Copied entire usr structure"
 else
@@ -152,7 +139,6 @@ fi
 
 sync
 
-# Verify installation
 echo "Verifying installation..."
 if [ -d "$PLUGINPATH" ] && [ -n "$(ls -A "$PLUGINPATH" 2>/dev/null)" ]; then
     echo "Plugin directory found and not empty: $PLUGINPATH"
@@ -164,15 +150,30 @@ else
     exit 1
 fi
 
-# Cleanup
 cleanup
 sync
 
-# System info
 FILE="/etc/image-version"
-box_type=$(head -n 1 /etc/hostname 2>/dev/null || echo "Unknown")
-distro_value=$(grep '^distro=' "$FILE" 2>/dev/null | awk -F '=' '{print $2}')
-distro_version=$(grep '^version=' "$FILE" 2>/dev/null | awk -F '=' '{print $2}')
+box_type=$(sed -n '1p' /etc/hostname 2>/dev/null || echo "Unknown")
+# distro_value=$(grep '^distro=' "$FILE" 2>/dev/null | awk -F '=' '{print $2}')
+# distro_version=$(grep '^version=' "$FILE" 2>/dev/null | awk -F '=' '{print $2}')
+distro_value="Unknown"
+distro_version="Unknown"
+if [ -r /etc/os-release ]; then
+    distro_value=$(grep '^NAME=' /etc/os-release 2>/dev/null | cut -d'"' -f2)
+    distro_version=$(grep '^VERSION_ID=' /etc/os-release 2>/dev/null | cut -d'"' -f2)
+elif [ -r /etc/issue ]; then
+    distro_value=$(head -n 1 /etc/issue 2>/dev/null | awk '{print $1}')
+    distro_version=$(head -n 1 /etc/issue 2>/dev/null | awk '{print $2}')
+elif [ -r /etc/vtiversion.info ]; then
+    distro_value=$(head -n 1 /etc/vtiversion.info 2>/dev/null)
+elif [ -r /etc/issue.net ]; then
+    distro_value=$(head -n 1 /etc/issue.net 2>/dev/null | awk '{print $1}')
+    distro_version=$(head -n 1 /etc/issue.net 2>/dev/null | awk '{print $2}')
+fi
+
+[ -z "$distro_value" ] && distro_value="Unknown"
+[ -z "$distro_version" ] && distro_version="Unknown"
 python_vers=$(python --version 2>&1)
 
 cat <<EOF
@@ -190,10 +191,9 @@ OS SYSTEM: $OSTYPE
 PYTHON: $python_vers
 IMAGE NAME: ${distro_value:-Unknown}
 IMAGE VERSION: ${distro_version:-Unknown}
+CHANGELOG: $changelog
+PLUGIN PATH: $PLUGINPATH
 PLUGIN VERSION: $version
 EOF
 
-echo "Restarting enigma2 in 5 seconds..."
-sleep 5
-killall -9 enigma2
 exit 0
