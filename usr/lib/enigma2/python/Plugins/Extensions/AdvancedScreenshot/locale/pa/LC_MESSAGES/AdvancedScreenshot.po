@@ -57,8 +57,8 @@ msgstr "ਐਡਵਾਂਸਡ ਸਕ੍ਰੀਨਸ਼ੌਟ ਪਲੱਗਇਨ 
 msgid "Enable plugin"
 msgstr "ਪਲੱਗਇਨ ਨੂੰ ਸਮਰੱਥ ਬਣਾਓ"
 
-msgid "Error during capture:\n"
-msgstr "ਕੈਪਚਰ ਦੌਰਾਨ ਗਲਤੀ:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "ਕੈਪਚਰ ਦੌਰਾਨ ਗਲਤੀ:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "ਗੈਲਰੀ ਲੋਡ ਕਰਨ ਵਿੱਚ ਤਰੁੱਟੀ:"

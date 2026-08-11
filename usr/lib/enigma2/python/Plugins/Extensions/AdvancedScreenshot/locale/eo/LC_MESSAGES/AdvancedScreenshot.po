@@ -58,8 +58,8 @@ msgstr "Ebligu aŭ malŝaltu la Altnivelan Ekrankopio-kromaĵon."
 msgid "Enable plugin"
 msgstr "Ebligu kromprogramon"
 
-msgid "Error during capture:\n"
-msgstr "Eraro dum kapto:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Eraro dum kapto:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Eraro dum ŝarĝo de galerio:"

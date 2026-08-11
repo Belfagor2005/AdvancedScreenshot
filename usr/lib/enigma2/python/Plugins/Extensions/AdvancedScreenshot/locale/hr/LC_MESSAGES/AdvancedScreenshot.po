@@ -66,8 +66,8 @@ msgstr "Omogućite ili onemogućite dodatak Advanced Screenshot."
 msgid "Enable plugin"
 msgstr "Otvori dodatak"
 
-msgid "Error during capture:\n"
-msgstr "Greška tijekom snimanja:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Greška tijekom snimanja:\\\\\\\\n"
 
 #, fuzzy
 msgid "Error loading gallery:"

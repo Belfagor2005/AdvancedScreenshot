@@ -1,33 +1,5 @@
 #, fuzzy
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 msgid "' button instead of '"
 msgstr ""
 
@@ -76,7 +48,7 @@ msgstr ""
 msgid "Enable plugin"
 msgstr ""
 
-msgid "Error during capture:\n"
+msgid "Error during capture:\\n"
 msgstr ""
 
 msgid "Error loading gallery:"

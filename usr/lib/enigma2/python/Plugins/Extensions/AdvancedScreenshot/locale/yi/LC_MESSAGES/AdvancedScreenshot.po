@@ -57,8 +57,8 @@ msgstr "געבן אָדער דיסייבאַל די Advanced Screenshot פּלו
 msgid "Enable plugin"
 msgstr "געבן פּלוגין"
 
-msgid "Error during capture:\n"
-msgstr "טעות בעת כאַפּן:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "טעות בעת כאַפּן:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "טעות לאָודינג גאַלעריע:"

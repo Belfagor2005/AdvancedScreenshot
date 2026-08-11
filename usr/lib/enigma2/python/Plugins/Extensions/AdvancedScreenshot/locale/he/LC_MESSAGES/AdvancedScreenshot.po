@@ -58,8 +58,8 @@ msgstr "הפעל או השבת את הפלאגין Advanced Screenshot."
 msgid "Enable plugin"
 msgstr "הפעל תוסף"
 
-msgid "Error during capture:\n"
-msgstr "שגיאה במהלך לכידה:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "שגיאה במהלך לכידה:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "שגיאה בטעינת הגלריה:"

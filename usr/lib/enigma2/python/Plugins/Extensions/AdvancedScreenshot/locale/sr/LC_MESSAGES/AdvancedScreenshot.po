@@ -66,8 +66,8 @@ msgstr "Омогућите или онемогућите додатак Адва
 msgid "Enable plugin"
 msgstr "Otvori plugin"
 
-msgid "Error during capture:\n"
-msgstr "Greška tokom snimanja:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Greška tokom snimanja:\\\\\\\\n"
 
 #, fuzzy
 msgid "Error loading gallery:"

@@ -57,8 +57,8 @@ msgstr "Овозможете или оневозможете го приклуч
 msgid "Enable plugin"
 msgstr "Овозможи приклучок"
 
-msgid "Error during capture:\n"
-msgstr "Грешка при снимање:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Грешка при снимање:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Грешка при вчитување на галеријата:"

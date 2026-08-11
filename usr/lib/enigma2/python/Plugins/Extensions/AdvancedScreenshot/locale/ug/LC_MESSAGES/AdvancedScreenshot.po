@@ -57,8 +57,8 @@ msgstr "Advanced Screenshot قىستۇرمىسىنى قوزغىتىش ياكى �
 msgid "Enable plugin"
 msgstr "قىستۇرمىنى قوزغىتىڭ"
 
-msgid "Error during capture:\n"
-msgstr "تۇتۇش جەريانىدا خاتالىق: \ n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "تۇتۇش جەريانىدا خاتالىق: \\\\\\\\ n"
 
 msgid "Error loading gallery:"
 msgstr "يۈكلەش كارىدورى:"

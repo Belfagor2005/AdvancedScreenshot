@@ -69,8 +69,8 @@ msgstr "Ενεργοποιήστε ή απενεργοποιήστε την πρ
 msgid "Enable plugin"
 msgstr "Ενεργοποίηση πρόσθετου"
 
-msgid "Error during capture:\n"
-msgstr "Σφάλμα κατά τη λήψη:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Σφάλμα κατά τη λήψη:\\\\\\\\n"
 
 #, fuzzy
 msgid "Error loading gallery:"

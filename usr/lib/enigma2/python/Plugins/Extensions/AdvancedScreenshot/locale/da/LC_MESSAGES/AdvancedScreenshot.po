@@ -58,8 +58,8 @@ msgstr "Aktiver eller deaktiver pluginnet Advanced Screenshot."
 msgid "Enable plugin"
 msgstr "Aktiver plugin"
 
-msgid "Error during capture:\n"
-msgstr "Fejl under optagelse:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Fejl under optagelse:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Fejl ved indlæsning af galleri:"

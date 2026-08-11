@@ -62,8 +62,8 @@ msgstr "Schakel de plug-in Geavanceerde screenshot in of uit."
 msgid "Enable plugin"
 msgstr "Schakel plug-in in"
 
-msgid "Error during capture:\n"
-msgstr "Fout tijdens vastleggen:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Fout tijdens vastleggen:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Fout bij laden van galerij:"

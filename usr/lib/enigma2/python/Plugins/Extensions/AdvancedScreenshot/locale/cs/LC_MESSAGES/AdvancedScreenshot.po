@@ -58,8 +58,8 @@ msgstr "Povolte nebo zakažte plugin Advanced Screenshot."
 msgid "Enable plugin"
 msgstr "Povolit plugin"
 
-msgid "Error during capture:\n"
-msgstr "Chyba při snímání:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Chyba při snímání:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Chyba při načítání galerie:"

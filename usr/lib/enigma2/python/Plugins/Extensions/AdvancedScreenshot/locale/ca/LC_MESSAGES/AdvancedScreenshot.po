@@ -57,8 +57,8 @@ msgstr "Activa o desactiva el connector Captura de pantalla avançada."
 msgid "Enable plugin"
 msgstr "Activa el connector"
 
-msgid "Error during capture:\n"
-msgstr "Error durant la captura:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Error durant la captura:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Error en carregar la galeria:"
@@ -190,7 +190,7 @@ msgid "Web capture failed: Grab not available"
 msgstr "La captura web ha fallat: la captura no està disponible"
 
 msgid "long ' can be used."
-msgstr "llarg " es pot utilitzar."
+msgstr "llarg \\\\\\\" es pot utilitzar."
 
 msgid "long:"
 msgstr "llarg:"

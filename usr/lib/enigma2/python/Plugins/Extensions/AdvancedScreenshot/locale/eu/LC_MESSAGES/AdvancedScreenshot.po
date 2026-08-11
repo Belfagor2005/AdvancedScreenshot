@@ -57,8 +57,8 @@ msgstr "Gaitu edo desgaitu pantaila-argazki aurreratuaren plugina."
 msgid "Enable plugin"
 msgstr "Gaitu plugina"
 
-msgid "Error during capture:\n"
-msgstr "Errore bat ateratzean:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Errore bat ateratzean:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Errore bat gertatu da galeria kargatzean:"

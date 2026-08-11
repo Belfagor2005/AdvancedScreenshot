@@ -57,8 +57,8 @@ msgstr "Aktiveer of deaktiveer die Advanced Screenshot-inprop."
 msgid "Enable plugin"
 msgstr "Aktiveer inprop"
 
-msgid "Error during capture:\n"
-msgstr "Fout tydens opname:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Fout tydens opname:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Kon nie gallery laai nie:"

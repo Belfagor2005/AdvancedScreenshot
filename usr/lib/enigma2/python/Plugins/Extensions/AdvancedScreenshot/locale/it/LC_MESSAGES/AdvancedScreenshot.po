@@ -68,8 +68,8 @@ msgstr "Abilita o disabilita il plugin Advanced Screenshot."
 msgid "Enable plugin"
 msgstr "Abilita plugin"
 
-msgid "Error during capture:\n"
-msgstr "Errore durante l'acquisizione:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Errore durante l'acquisizione:\\\\\\\\n"
 "Errore durante la cattura:\n"
 " \n"
 

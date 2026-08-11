@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "' button instead of '"
-msgstr ""ღილაკი" ნაცვლად"
+msgstr "\\\\\\\"ღილაკი\\\\\\\" ნაცვლად"
 
 msgid "Add -n option to force no stretching."
 msgstr "დაამატეთ -n ვარიანტი, რათა აიძულოთ არ დაჭიმოთ."
@@ -57,8 +57,8 @@ msgstr "ჩართეთ ან გამორთეთ Advanced Screenshot �
 msgid "Enable plugin"
 msgstr "მოდულის ჩართვა"
 
-msgid "Error during capture:\n"
-msgstr "შეცდომა გადაღების დროს:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "შეცდომა გადაღების დროს:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "შეცდომა გალერეის ჩატვირთვისას:"

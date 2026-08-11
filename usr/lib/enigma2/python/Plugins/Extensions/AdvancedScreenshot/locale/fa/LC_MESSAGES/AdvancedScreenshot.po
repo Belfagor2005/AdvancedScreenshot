@@ -16,7 +16,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: plugin.py\n"
 
 msgid "' button instead of '"
-msgstr "دکمه "به جای""
+msgstr "دکمه \\\\\\\"به جای\\\\\\\""
 
 msgid "Add -n option to force no stretching."
 msgstr "گزینه -n را برای عدم کشش مجبور کنید."
@@ -63,8 +63,8 @@ msgstr "افزونه Advanced Screenshot را فعال یا غیرفعال کن�
 msgid "Enable plugin"
 msgstr "افزونه را فعال کنید"
 
-msgid "Error during capture:\n"
-msgstr "خطا در هنگام ضبط:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "خطا در هنگام ضبط:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "خطا در بارگیری گالری:"

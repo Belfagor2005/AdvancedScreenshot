@@ -11,7 +11,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 msgid "' button instead of '"
-msgstr ""кнопка замест""
+msgstr "\\\\\\\"кнопка замест\\\\\\\""
 
 msgid "Add -n option to force no stretching."
 msgstr "Дадайце опцыю -n, каб не расцягвацца."
@@ -58,8 +58,8 @@ msgstr "Уключыце або адключыце ўбудову пашыран
 msgid "Enable plugin"
 msgstr "Уключыць убудову"
 
-msgid "Error during capture:\n"
-msgstr "Памылка падчас здымкі:\n"
+msgid "Error during capture:\\\\\\\\n"
+msgstr "Памылка падчас здымкі:\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Памылка загрузкі галерэі:"
