@@ -57,8 +57,8 @@ msgstr "Միացնել կամ անջատել Advanced Screenshot plugin-ը:"
 msgid "Enable plugin"
 msgstr "Միացնել փլագինը"
 
-msgid "Error during capture:\\\\\\\\n"
-msgstr "Սխալ նկարահանման ժամանակ՝\\\\\\\\n"
+msgid "Error during capture:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Սխալ նկարահանման ժամանակ՝\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Սխալ՝ պատկերասրահը բեռնելիս."

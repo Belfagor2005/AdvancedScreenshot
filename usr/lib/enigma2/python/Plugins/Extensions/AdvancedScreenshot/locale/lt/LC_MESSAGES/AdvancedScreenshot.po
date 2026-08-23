@@ -58,8 +58,8 @@ msgstr "Įjunkite arba išjunkite papildinį Išplėstinė ekrano kopija."
 msgid "Enable plugin"
 msgstr "Įjungti papildinį"
 
-msgid "Error during capture:\\\\\\\\n"
-msgstr "Klaida fiksuojant:\\\\\\\\n"
+msgid "Error during capture:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Klaida fiksuojant:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Klaida įkeliant galeriją:"

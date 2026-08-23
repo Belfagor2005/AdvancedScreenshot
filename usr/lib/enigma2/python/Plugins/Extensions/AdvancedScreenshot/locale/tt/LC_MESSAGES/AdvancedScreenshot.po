@@ -57,8 +57,8 @@ msgstr "Advanced Screenshot плагинын кушу яки сүндерү."
 msgid "Enable plugin"
 msgstr "Плагинны кушу"
 
-msgid "Error during capture:\\\\\\\\n"
-msgstr "Кулга алу вакытында хата: \\\\\\\\ n"
+msgid "Error during capture:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Кулга алу вакытында хата: \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Error loading gallery:"
 msgstr "Галереяны йөкләүдә хата:"

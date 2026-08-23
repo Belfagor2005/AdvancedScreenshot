@@ -68,8 +68,9 @@ msgstr "启用或禁用高级屏幕截图插件。"
 msgid "Enable plugin"
 msgstr "启用插件"
 
+#, fuzzy
 msgid "Error during capture:\\\\\\\\n"
-msgstr "解压缩固件时出错:\\\\\\\\n"
+msgstr "解压缩固件时出错:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "Error loading gallery:"

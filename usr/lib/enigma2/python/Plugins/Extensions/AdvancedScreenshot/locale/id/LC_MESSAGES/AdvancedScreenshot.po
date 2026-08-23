@@ -57,8 +57,9 @@ msgstr "Mengaktifkan atau menonaktifkan plugin Tangkapan Layar Tingkat Lanjut."
 msgid "Enable plugin"
 msgstr "Aktifkan plugin"
 
+#, fuzzy
 msgid "Error during capture:\\\\\\\\n"
-msgstr "Kesalahan saat pengambilan:\\\\\\\\n"
+msgstr "Kesalahan saat pengambilan:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Kesalahan saat memuat galeri:"

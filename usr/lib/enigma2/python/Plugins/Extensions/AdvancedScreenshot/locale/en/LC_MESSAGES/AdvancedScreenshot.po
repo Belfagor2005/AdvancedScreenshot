@@ -59,8 +59,9 @@ msgstr "Enable or disable the Advanced Screenshot plugin."
 msgid "Enable plugin"
 msgstr "Enable plugin"
 
+#, fuzzy
 msgid "Error during capture:\\\\\\\\n"
-msgstr "Error during capture:\\\\\\\\n"
+msgstr "Error during capture:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Error loading gallery:"

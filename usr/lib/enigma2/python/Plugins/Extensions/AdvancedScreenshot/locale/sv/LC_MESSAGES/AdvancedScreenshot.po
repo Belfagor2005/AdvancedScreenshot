@@ -58,8 +58,8 @@ msgstr "Aktivera eller inaktivera plugin-programmet Advanced Screenshot."
 msgid "Enable plugin"
 msgstr "Aktivera plugin"
 
-msgid "Error during capture:\\\\\\\\n"
-msgstr "Fel under inspelning:\\\\\\\\n"
+msgid "Error during capture:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Fel under inspelning:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error loading gallery:"
 msgstr "Det gick inte att läsa in galleriet:"
